@@ -1,5 +1,3 @@
-import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame_ldtk/flame_ldtk.dart';
 import 'package:flutter/widgets.dart' hide Animation, Image;
@@ -17,7 +15,7 @@ class LdtkGame extends FlameGame {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    mapComponent = await LdtkComponent.load('third_map.ldtk');
+    mapComponent = await LdtkComponent.load('third_map.ldtk', simpleMode: true);
     add(mapComponent);
 
     // final objGroup =

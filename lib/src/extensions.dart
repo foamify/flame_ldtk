@@ -4,28 +4,26 @@ import 'package:collection/collection.dart';
 import 'package:flame_ldtk/flame_ldtk.dart';
 
 extension GetById on Ldtk {
-  Level? getLevelByIid(int iid) =>
+  Level? getLevelByIid(String iid) =>
       levels?.singleWhereOrNull((element) => element.iid == iid);
 
   LayerInstance? getLayerByIid(int iid) =>
-      levels?.map((e) => e.layerInstances?.getLayerByIid(iid)).first;
+      levels?.map((e) => e.layerInstances?.getLayerByUid(iid)).first;
 
   TilesetDefinition? getTilesetByUid(int uid) =>
       defs?.tilesets?.singleWhereOrNull((element) => element.uid == uid);
 }
 
 extension GetLevelById on List<Level>? {
-  // Level? getLevelByUid(int uid) => this?.singleWhereOrNull((element) => element.uid == uid);
-  Level? getLevelByIid(int iid) =>
+  Level? getLevelByIid(String iid) =>
       this?.singleWhereOrNull((element) => element.iid == iid);
 
-  LayerInstance? getLayerByIid(int iid) =>
-      this?.map((e) => e.layerInstances?.getLayerByIid(iid)).first;
+  LayerInstance? getLayerByUid(int iid) =>
+      this?.map((e) => e.layerInstances?.getLayerByUid(iid)).first;
 }
 
 extension GetLayerById on List<LayerInstance>? {
-  // LayerInstance? getLayerByUid(int uid) => this?.singleWhereOrNull((element) => element.layerDefUid == uid);
-  LayerInstance? getLayerByIid(int iid) =>
+  LayerInstance? getLayerByUid(int iid) =>
       this?.singleWhereOrNull((element) => element.layerDefUid == iid);
 }
 

@@ -60,6 +60,37 @@ class TileAtlas {
     return imageSet;
   }
 
+  static Future<TileAtlas> fromSimple(
+    String ldtkProjectName,
+    Level level,
+  ) async {
+    final levelName = level.identifier!;
+    final key = atlasKey([levelName]);
+    if (atlasMap.containsKey(key)) {
+      return atlasMap[key]!.clone();
+    }
+
+    // The map contains one image, so its either an atlas already, or a
+    // really boring map.
+    final image = (await (Flame.images..prefix = '').load(
+      'assets/ldtk/$ldtkProjectName/simplified/$levelName/_composite.png',
+      key: key,
+    ))
+        .clone();
+
+    return atlasMap[key] ??= TileAtlas._(
+      image,
+      {
+        levelName: Offset(
+          level.worldX?.toDouble() ?? 0,
+          level.worldY?.toDouble() ?? 0,
+        )
+      },
+      key,
+      null,
+    );
+  }
+
   /// Loads all the tileset images for the [ldtk] into one [TileAtlas].
   static Future<TileAtlas> fromLdtk(Ldtk ldtk, Uri? ldtkPath) async {
     final imageList = _onlyTileImages(ldtk, ldtkPath).toList();
@@ -78,9 +109,9 @@ class TileAtlas {
       // The map contains one image, so its either an atlas already, or a
       // really boring map.
       final imageRelPath = imageList.first;
-      final image = (await (Flame.images..prefix = '')
-              .load(imageRelPath, key: key))
-          .clone();
+      final image =
+          (await (Flame.images..prefix = '').load(imageRelPath, key: key))
+              .clone();
 
       return atlasMap[key] ??=
           TileAtlas._(image, {imageRelPath: Offset.zero}, key, ldtkPath);
@@ -101,10 +132,9 @@ class TileAtlas {
     // });
 
     // parallelize the download of images.
-    await Future.wait([
-      ...imageList.map((imagePath) =>
-          Flame.images.load(imagePath))
-    ]);
+    await Future.wait(
+      [...imageList.map((imagePath) => Flame.images.load(imagePath))],
+    );
 
     for (final imagePath in imageList) {
       final image = await Flame.images.load(imagePath);
@@ -112,8 +142,7 @@ class TileAtlas {
 
       pictureRect = pictureRect.expandToInclude(rect);
 
-      final offset =
-          offsetMap[imagePath] = Offset(rect.left, rect.top);
+      final offset = offsetMap[imagePath] = Offset(rect.left, rect.top);
 
       canvas.drawImage(image, offset, _emptyPaint);
     }

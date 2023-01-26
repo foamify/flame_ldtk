@@ -100,6 +100,17 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
   static Future<LdtkComponent> load(
     String fileName, {
     int? priority,
+    bool? simpleMode,
+  }) async {
+    return LdtkComponent(
+      await RenderableLdtkMap.fromFile(fileName, simpleMode: simpleMode),
+      priority: priority,
+    );
+  }
+
+  static Future<LdtkComponent> loadSimple(
+    String fileName, {
+    int? priority,
   }) async {
     return LdtkComponent(
       await RenderableLdtkMap.fromFile(fileName),

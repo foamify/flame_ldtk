@@ -12,9 +12,9 @@ dependencies:
   flame: ^1.6.0
   flutter:
     sdk: flutter
-  meta: ^1.7.0
   ldtk:
     git: https://github.com/foamify/ldtk.dart.git
+  meta: ^1.7.0
 
 dev_dependencies:
   dartdoc: ^6.0.1

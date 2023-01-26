@@ -20,3 +20,7 @@ flutter:
   assets:
     - assets/
     - assets/ldtk/
+    - assets/ldtk/third_map/
+    - assets/ldtk/third_map/simplified/
+    - assets/ldtk/third_map/simplified/Level_0/
+    - assets/ldtk/third_map/simplified/Level_1/

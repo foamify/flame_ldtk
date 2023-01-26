@@ -61,14 +61,16 @@ class TilesLayer extends RenderableLayer<LayerInstance> {
       final tileset =
           ldtk.defs?.tilesets.getTilesetByUid(layer.tilesetDefUid ?? -1);
       final imageRelPath = tileset?.relPath;
-      final imagePath = TileAtlas.getPathFromRelPath(ldtkPath, imageRelPath ?? '');
+      final imagePath = TileAtlas.getPathFromRelPath(
+        ldtkPath,
+        imageRelPath ?? '',
+      );
 
       if (imageRelPath == null) {
         continue;
       }
 
-      if (!tileAtlas
-          .contains(imagePath)) {
+      if (!tileAtlas.contains(imagePath)) {
         return;
       }
 
