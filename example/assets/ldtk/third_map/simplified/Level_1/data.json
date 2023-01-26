@@ -1,0 +1,116 @@
+{
+	"identifier": "Level_1",
+	"uniqueIdentifer": "21878160-7820-11ed-8f42-e91a941f333e",
+	"x": 256,
+	"y": 0,
+	"width": 256,
+	"height": 256,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "54826920-7820-11ed-a8bc-7757f6cf8f2e",
+			"dir": "w"
+		}
+	],
+	"customFields" : {},
+	"layers": [
+		"Base.png",
+		"Grass_AutoLayer.png",
+		"GrassGrid.png",
+		"Ground.png"
+	],
+	"entities": {
+		"Bush_1": [
+			{
+				"id": "Bush_1",
+				"iid": "906fd6e0-7820-11ed-8f42-27bc7b8afffe",
+				"layer": "Bushes",
+				"x": 40,
+				"y": 72,
+				"width": 16,
+				"height": 16,
+				"color": 15389866,
+				"customFields" : {}
+			},
+			{
+				"id": "Bush_1",
+				"iid": "90dd17a0-7820-11ed-8f42-159face6e114",
+				"layer": "Bushes",
+				"x": 168,
+				"y": 24,
+				"width": 16,
+				"height": 16,
+				"color": 15389866,
+				"customFields" : {}
+			},
+			{
+				"id": "Bush_1",
+				"iid": "9163d3d0-7820-11ed-8f42-b184db6894c1",
+				"layer": "Bushes",
+				"x": 88,
+				"y": 232,
+				"width": 16,
+				"height": 16,
+				"color": 15389866,
+				"customFields" : {}
+			},
+			{
+				"id": "Bush_1",
+				"iid": "92201ef0-7820-11ed-8f42-17e459d461bb",
+				"layer": "Bushes",
+				"x": 24,
+				"y": 216,
+				"width": 16,
+				"height": 16,
+				"color": 15389866,
+				"customFields" : {}
+			}
+		],
+		"Tree_1": [
+			{
+				"id": "Tree_1",
+				"iid": "952cc2b0-7820-11ed-8f42-5330d347b99d",
+				"layer": "Bushes",
+				"x": 56,
+				"y": 32,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			},
+			{
+				"id": "Tree_1",
+				"iid": "95a463b0-7820-11ed-8f42-a31cd25bba1c",
+				"layer": "Bushes",
+				"x": 136,
+				"y": 48,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			},
+			{
+				"id": "Tree_1",
+				"iid": "961c2bc0-7820-11ed-8f42-39dd2ca0aafa",
+				"layer": "Bushes",
+				"x": 232,
+				"y": 32,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			},
+			{
+				"id": "Tree_1",
+				"iid": "ae14a540-7820-11ed-8f42-09840eb98092",
+				"layer": "Bushes",
+				"x": 152,
+				"y": 240,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			}
+		]
+	}
+}
