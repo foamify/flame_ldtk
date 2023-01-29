@@ -103,7 +103,7 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     bool? simpleMode,
   }) async {
     return LdtkComponent(
-      await RenderableLdtkMap.fromFile(fileName, simpleMode: simpleMode),
+      await RenderableLdtkMap.fromFile(fileName),
       priority: priority,
     );
   }
@@ -113,7 +113,7 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     int? priority,
   }) async {
     return LdtkComponent(
-      await RenderableLdtkMap.fromFile(fileName),
+      await RenderableLdtkMap.fromSimple(fileName),
       priority: priority,
     );
   }

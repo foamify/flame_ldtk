@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -13,7 +13,6 @@ import 'package:flame_ldtk/src/renderable_layers/tiles_layer.dart';
 import 'package:flame_ldtk/src/tile_atlas.dart';
 import 'package:flame_ldtk/src/tile_stack.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
 import 'package:ldtk/ldtk.dart';
 
 /// {@template _renderable_ldtk_map}
@@ -42,7 +41,7 @@ class RenderableLdtkMap {
   final List<RenderableLevel> renderableLevels;
 
   /// The target size for each tile in the tiled map.
-  final Vector2 destTileSize;
+  final Vector2? destTileSize;
 
   /// Camera used for determining the current viewport for layer rendering.
   /// Optional, but required for parallax support
@@ -56,6 +55,9 @@ class RenderableLdtkMap {
   late final Paint? _backgroundPaint;
 
   // final Map<Tile, TileFrames> animationFrames;
+  final bool simpleMode;
+
+  final List<Sprite>? simpleModeLayers;
 
   /// {@macro _renderable_ldtk_map}
   RenderableLdtkMap(
@@ -64,6 +66,8 @@ class RenderableLdtkMap {
     this.destTileSize, {
     this.camera,
     this.ldtkPath,
+    this.simpleMode = false,
+    this.simpleModeLayers,
   }) {
     _refreshCache();
 
@@ -174,7 +178,6 @@ class RenderableLdtkMap {
   static Future<RenderableLdtkMap> fromFile(
     String fileName, {
     Camera? camera,
-    bool? simpleMode,
   }) async {
     final ldtkPath = Uri.file(
       'assets/ldtk/$fileName',
@@ -185,7 +188,6 @@ class RenderableLdtkMap {
       contents,
       camera: camera,
       path: ldtkPath,
-      simpleMode: simpleMode,
     );
   }
 
@@ -194,10 +196,9 @@ class RenderableLdtkMap {
     String contents, {
     Camera? camera,
     Uri? path,
-    bool? simpleMode,
   }) async {
     final ldtk = Ldtk.fromRawJson(contents);
-    return fromLdtk(ldtk, camera: camera, path: path, simpleMode: simpleMode);
+    return fromLdtk(ldtk, camera: camera, path: path);
   }
 
   /// Parses an [Ldtk] returning a [RenderableLdtkMap].
@@ -205,7 +206,6 @@ class RenderableLdtkMap {
     Ldtk ldtk, {
     Camera? camera,
     Uri? path,
-    bool? simpleMode,
   }) async {
     // map.tilesets.sort((l, r) => (l.firstGid ?? 0) - (r.firstGid ?? 0));
 
@@ -215,7 +215,6 @@ class RenderableLdtkMap {
       ldtk,
       camera,
       path,
-      simpleMode,
     );
 
     return RenderableLdtkMap(
@@ -230,69 +229,73 @@ class RenderableLdtkMap {
     );
   }
 
+  static Future<RenderableLdtkMap> fromSimple(
+    String fileName, {
+    Camera? camera,
+  }) async {
+    final ldtkPath = Uri.file(
+      'assets/ldtk/$fileName',
+      windows: Platform.isWindows,
+    );
+    final contents = await Flame.bundle.loadString(ldtkPath.path);
+    final ldtk = Ldtk.fromRawJson(contents);
+
+    final simpleModeLayers = <Sprite>[];
+    for (final level in ldtk.levels ?? <Level>[]) {
+      final levelName = level.identifier;
+      final ldtkProjectName = fileName.substring(0, fileName.length - 5);
+
+      // The map contains one image, so its either an atlas already, or a
+      // really boring map.
+      final image = await (Flame.images..prefix = '').load(
+        'assets/ldtk/$ldtkProjectName/simplified/$levelName/_composite.png',
+        key: levelName,
+      );
+      simpleModeLayers.add(
+        Sprite(
+          image,
+          srcPosition: Vector2(
+            level.worldX?.toDouble() ?? 0,
+            level.worldY?.toDouble() ?? 0,
+          ),
+        ),
+      );
+    }
+
+    return RenderableLdtkMap(
+      ldtk,
+      [],
+      null,
+      camera: camera,
+      ldtkPath: ldtkPath,
+      simpleMode: true,
+      simpleModeLayers: simpleModeLayers,
+    );
+  }
+
   static Future<List<RenderableLevel<Level>>> _renderableLevels(
     List<Level>? levels,
     World? parent,
     Ldtk ldtk,
     Camera? camera,
     Uri? ldtkPath,
-    bool? simpleMode,
   ) async {
     final levelLayers = <RenderableLevel<Level>>[];
-    if ((ldtk.simplifiedExport ?? false) && (simpleMode ?? false)) {
-      var fileName = ldtkPath?.path.split(Platform.pathSeparator).last;
-      fileName = fileName?.substring(0, fileName.length - 5) ?? '';
-
-      final simplifiedPath = ldtkPath
-              ?.resolve('$fileName/simplified')
-              .toFilePath(windows: Platform.isWindows) ??
-          '.';
-      // final manifestJson = await rootBundle.loadString('AssetManifest.json');
-  // final levelDataPaths = (json.decode(manifestJson) as Map<String, dynamic>)
-      //     .keys
-      //     .where((String key) =>
-      //         key.startsWith(simplifiedPath) && key.endsWith('data.json'))
-      //     .toList();
-      final levelNames = levels?.map((e) => e.identifier).toSet() ?? {};
-
-      final _levels = <Level>[];
-      // for (final levelDataPath in levelDataPaths) {
-      for (final levelName in levelNames) {
-        final levelDataRawJson = jsonDecode(await rootBundle.loadString(
-            '$simplifiedPath/$levelName/data.json',),) as Map<String, dynamic>;
-        final data = Level.fromJson(levelDataRawJson);
-        data.worldX = levelDataRawJson['x'] as int?;
-        data.worldY = levelDataRawJson['y'] as int?;
-        _levels.add(data);
-      }
-      for (final level in _levels) {
+    if (levels != null) {
+      for (final level in levels) {
         final renderableLevel = RenderableLevel(
           level,
           parent,
           ldtk,
-          simpleMode: simpleMode,
         );
-        renderableLevel.tileAtlas = await TileAtlas.fromSimple(fileName, level);
+        renderableLevel.children = await _renderableLayers(
+          level.layerInstances,
+          level,
+          ldtk,
+          camera,
+          ldtkPath: ldtkPath,
+        );
         levelLayers.add(renderableLevel);
-      }
-    } else {
-      if (levels != null) {
-        for (final level in levels) {
-          final renderableLevel = RenderableLevel(
-            level,
-            parent,
-            ldtk,
-          );
-          renderableLevel.children = await _renderableLayers(
-            level.layerInstances,
-            level,
-            ldtk,
-            camera,
-            atlas: await TileAtlas.fromLdtk(ldtk, ldtkPath),
-            ldtkPath: ldtkPath,
-          );
-          levelLayers.add(renderableLevel);
-        }
       }
     }
     return levelLayers;
@@ -303,7 +306,7 @@ class RenderableLdtkMap {
     Level? parent,
     Ldtk map,
     Camera? camera, {
-    required TileAtlas atlas,
+    TileAtlas? atlas,
     Uri? ldtkPath,
   }) async {
     final renderLayers = <RenderableLayer<LayerInstance>>[];
@@ -314,7 +317,7 @@ class RenderableLdtkMap {
             layer,
             parent,
             map,
-            atlas.clone(),
+            atlas?.clone(),
             ldtkPath,
           ),
         );
@@ -325,15 +328,19 @@ class RenderableLdtkMap {
 
   /// Handle game resize and propagate it to renderable layers
   void handleResize(Vector2 canvasSize) {
-    for (final layer in renderableLevels) {
-      layer.handleResize(canvasSize);
+    if (!simpleMode) {
+      for (final layer in renderableLevels) {
+        layer.handleResize(canvasSize);
+      }
     }
   }
 
   /// Rebuilds the cache for rendering
   void _refreshCache() {
-    for (final level in renderableLevels) {
-      level.refreshCache();
+    if (!simpleMode) {
+      for (final level in renderableLevels) {
+        level.refreshCache();
+      }
     }
   }
 
@@ -343,17 +350,25 @@ class RenderableLdtkMap {
       c.drawPaint(_backgroundPaint!);
     }
 
-    // Paint each layer in reverse order, because the last layers should be
-    // rendered beneath the first layers
-    for (final level in renderableLevels) {
-      level.render(c, camera);
+    if (simpleMode) {
+      for (final sprite in simpleModeLayers ?? <Sprite>[]) {
+        sprite.render(c);
+      }
+    } else {
+      // Paint each layer in reverse order, because the last layers should be
+      // rendered beneath the first layers
+      for (final level in renderableLevels) {
+        level.render(c, camera);
+      }
     }
   }
 
   void update(double dt) {
-    // Then every layer.
-    for (final layer in renderableLevels) {
-      layer.update(dt);
+    if (!simpleMode) {
+      // Then every layer.
+      for (final layer in renderableLevels) {
+        layer.update(dt);
+      }
     }
   }
 }

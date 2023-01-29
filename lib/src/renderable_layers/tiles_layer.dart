@@ -12,7 +12,7 @@ import 'package:meta/meta.dart';
 @internal
 class TilesLayer extends RenderableLayer<LayerInstance> {
   late final _layerPaint = Paint();
-  final TileAtlas tileAtlas;
+  final TileAtlas? tileAtlas;
   late List<List<MutableRSTransform?>> indexes;
   final Uri? ldtkPath;
 
@@ -40,7 +40,7 @@ class TilesLayer extends RenderableLayer<LayerInstance> {
   void update(double dt) {}
 
   void _cacheLayerTiles() {
-    tileAtlas.batch?.clear();
+    tileAtlas?.batch?.clear();
 
     final tileGridSize = layer.gridSize ?? 0;
     final tiles = layer.gridTiles;
@@ -49,7 +49,7 @@ class TilesLayer extends RenderableLayer<LayerInstance> {
       layer.gridSize?.toDouble() ?? 0,
     );
     final halfMapTile = Vector2(tileGridSize / 2, tileGridSize / 2);
-    final batch = tileAtlas.batch;
+    final batch = tileAtlas?.batch;
     if (batch == null || tiles == null) {
       return;
     }
@@ -66,15 +66,15 @@ class TilesLayer extends RenderableLayer<LayerInstance> {
         imageRelPath ?? '',
       );
 
-      if (imageRelPath == null) {
+      if (imageRelPath == null || tileAtlas == null) {
         continue;
       }
 
-      if (!tileAtlas.contains(imagePath)) {
+      if (!tileAtlas!.contains(imagePath)) {
         return;
       }
 
-      final spriteOffset = tileAtlas.offsets[imagePath];
+      final spriteOffset = tileAtlas?.offsets[imagePath];
       final src = MutableRect.fromRect(
         tileset
                 ?.computeDrawRect(tile)
@@ -112,7 +112,7 @@ class TilesLayer extends RenderableLayer<LayerInstance> {
 
   @override
   void render(Canvas canvas, Camera? camera) {
-    if (tileAtlas.batch == null) {
+    if (tileAtlas?.batch == null) {
       return;
     }
 
@@ -124,7 +124,7 @@ class TilesLayer extends RenderableLayer<LayerInstance> {
       applyParallaxOffset(canvas, camera);
     }
 
-    tileAtlas.batch?.render(canvas, paint: _layerPaint);
+    tileAtlas?.batch?.render(canvas, paint: _layerPaint);
 
     canvas.restore();
   }
@@ -133,7 +133,7 @@ class TilesLayer extends RenderableLayer<LayerInstance> {
     LayerInstance layer,
     Level? parent,
     Ldtk ldtk,
-    TileAtlas atlas,
+    TileAtlas? atlas,
     Uri? ldtkPath,
   ) async {
     return TilesLayer(

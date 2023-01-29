@@ -16,17 +16,13 @@ class RenderableLevel<T extends Level> {
   /// The parent [World] layer (when it finallly exists)
   final World? world;
 
-  /// Whether the .ldtk project uses "Super Simple Export" mode or not
-  final bool? simpleMode;
-
   late TileAtlas tileAtlas;
 
   RenderableLevel(
     this.level,
     this.world,
-    this.ldtk, {
-    this.simpleMode,
-  }) {
+    this.ldtk,
+  ) {
     _layerPaint.color = const Color.fromRGBO(255, 255, 255, 1);
   }
 
@@ -39,56 +35,26 @@ class RenderableLevel<T extends Level> {
   late final Image image;
 
   void refreshCache() {
-    if (simpleMode ?? false) {
-    } else {
-      for (final child in children) {
-        child.refreshCache();
-      }
+    for (final child in children) {
+      child.refreshCache();
     }
   }
 
   void handleResize(Vector2 canvasSize) {
-    if (simpleMode ?? false) {
-    } else {
-      for (final child in children) {
-        child.handleResize(canvasSize);
-      }
+    for (final child in children) {
+      child.handleResize(canvasSize);
     }
   }
 
   void render(Canvas canvas, Camera? camera) {
-    if (simpleMode ?? false) {
-      if (tileAtlas.batch == null) {
-        return;
-      }
-
-      canvas.save();
-
-      canvas.translate(
-        level.worldX?.toDouble() ?? 0,
-        level.worldY?.toDouble() ?? 0,
-      );
-
-      if (camera != null) {
-        applyParallaxOffset(canvas, camera);
-      }
-
-      tileAtlas.batch?.render(canvas, paint: _layerPaint);
-
-      canvas.restore();
-    } else {
-      for (final child in children) {
-        child.render(canvas, camera);
-      }
+    for (final child in children) {
+      child.render(canvas, camera);
     }
   }
 
   void update(double dt) {
-    if (simpleMode ?? false) {
-    } else {
       for (final child in children) {
         child.update(dt);
-      }
     }
   }
 
