@@ -93,20 +93,22 @@ class RenderableLdtkMap {
     /// get objects definition and sprite
     final entitiesDefinitions = <String, Sprite>{};
     for (final entity in ldtk.defs?.entities ?? <EntityDefinition>[]) {
-      entitiesDefinitions[entity.identifier!] = Sprite(
-        tilesetsDefinitions[entity.tilesetId!]!,
-        srcPosition: Vector2(
-          entity.tileRect!.x!.toDouble(),
-          entity.tileRect!.y!.toDouble(),
-        ),
-        srcSize: Vector2(
-          entity.tileRect!.w!.toDouble(),
-          entity.tileRect!.h!.toDouble(),
+      entitiesDefinitions[entity.identifier!] = makeEntityImage(
+        Sprite(
+          tilesetsDefinitions[entity.tilesetId!]!,
+          srcPosition: Vector2(
+            entity.tileRect!.x!.toDouble(),
+            entity.tileRect!.y!.toDouble(),
+          ),
+          srcSize: Vector2(
+            entity.tileRect!.w!.toDouble(),
+            entity.tileRect!.h!.toDouble(),
+          ),
         ),
       );
     }
 
-    final entities = ldtk.levels!
+    var entities = ldtk.levels!
         .map(
           (level) => level.layerInstances!.map(
             (layer) => layer.entityInstances!.map(
@@ -192,6 +194,22 @@ class RenderableLdtkMap {
     );
     picture.dispose();
     return compiledImage;
+  }
+
+  static Sprite makeEntityImage(Sprite sprite) {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+    var imageTopLeft = sprite.srcPosition.toOffset();
+    var imageBottomRight = (sprite.srcPosition + sprite.srcSize).toOffset();
+    final imageSize = Rect.fromPoints(imageTopLeft, imageBottomRight).size;
+    sprite.render(canvas);
+    final picture = recorder.endRecording();
+    final compiledImage = picture.toImageSync(
+      imageSize.width.round(),
+      imageSize.height.round(),
+    );
+    picture.dispose();
+    return Sprite(compiledImage);
   }
 
   /// Handle game resize and propagate it to renderable layers

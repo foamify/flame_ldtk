@@ -12,7 +12,7 @@ class LdtkEntity extends PositionComponent {
     );
   }
 
-  final Sprite sprite;
+  Sprite sprite;
 
   final EntityInstance instance;
 

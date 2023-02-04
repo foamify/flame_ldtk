@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_ldtk/flame_ldtk.dart';
 import 'package:flutter/widgets.dart' hide Animation, Image;
@@ -17,6 +18,9 @@ class LdtkGame extends FlameGame {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    add(FpsTextComponent());
+
     mapComponent =
         await LdtkComponent.loadSimple('third_map.ldtk', camera: camera);
     add(mapComponent);
@@ -28,8 +32,8 @@ class LdtkGame extends FlameGame {
     //     mapComponent.tileMap.getLayer<ObjectGroup>('AnimatedCoins');
     // final coins = await Flame.images.load('coins.png');
 
-    camera.zoom = 2;
-    // camera.viewport = FixedResolutionViewport(Vector2(16 * 28, 16 * 14));
+    camera.zoom = 1;
+    camera.viewport = FixedResolutionViewport(Vector2(256, 256));
 
     // We are 100% sure that an object layer named `AnimatedCoins`
     // exists in the example `map.tmx`.
@@ -75,7 +79,7 @@ class LdtkGame extends FlameGame {
     // Pan the camera down and right for 10 seconds, then reverse
     if (time % 20 < 10) {
       cameraTarget.x = imageBottomRight.dx;
-      cameraTarget.y = camera.viewport.effectiveSize.y;
+      cameraTarget.y = imageBottomRight.dy;
     } else {
       cameraTarget.setZero();
     }
