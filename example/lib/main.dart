@@ -25,8 +25,8 @@ class LdtkGame extends FlameGame {
     //     mapComponent.tileMap.getLayer<ObjectGroup>('AnimatedCoins');
     // final coins = await Flame.images.load('coins.png');
 
-    camera.zoom = 1;
-    camera.viewport = FixedResolutionViewport(Vector2(16 * 28, 16 * 14));
+    camera.zoom = 2;
+    // camera.viewport = FixedResolutionViewport(Vector2(16 * 28, 16 * 14));
 
     // We are 100% sure that an object layer named `AnimatedCoins`
     // exists in the example `map.tmx`.
@@ -71,8 +71,8 @@ class LdtkGame extends FlameGame {
     final imageSize = Rect.fromPoints(imageTopLeft, imageBottomRight).size;
     // Pan the camera down and right for 10 seconds, then reverse
     if (time % 20 < 10) {
-      cameraTarget.x = imageSize.width - camera.viewport.effectiveSize.x;
-      cameraTarget.y = camera.viewport.effectiveSize.y * 2;
+      cameraTarget.x = imageBottomRight.dx;
+      cameraTarget.y = camera.viewport.effectiveSize.y;
     } else {
       cameraTarget.setZero();
     }
