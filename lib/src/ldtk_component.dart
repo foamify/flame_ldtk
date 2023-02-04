@@ -39,8 +39,7 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
   }
 
   /// {@macro _ldtk_component}
-  LdtkComponent(
-    this.tileMap, {
+  LdtkComponent(this.tileMap, {
     super.position,
     super.scale,
     super.angle,
@@ -51,8 +50,8 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     size = computeSize(tileMap);
   }
 
-  /// Iterates all levels, find the fathest topleft and bottomright point,
-  /// and use those to make [Rect];
+  /// Iterate all levels, find the farthest topleft and bottomright point,
+  /// and then use those to make [Rect];
   @visibleForTesting
   static Vector2 computeSize(RenderableLdtkMap tileMap) {
     final topLeft = Vector2.zero();
@@ -96,21 +95,9 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     tileMap.handleResize(canvasSize);
   }
 
-  /// Loads a [LdtkComponent] from a file.
-  static Future<LdtkComponent> load(
-    String fileName, {
+  static Future<LdtkComponent> loadSimple(String fileName, {
     int? priority,
-    bool? simpleMode,
-  }) async {
-    return LdtkComponent(
-      await RenderableLdtkMap.fromFile(fileName),
-      priority: priority,
-    );
-  }
-
-  static Future<LdtkComponent> loadSimple(
-    String fileName, {
-    int? priority,
+    Camera? camera,
   }) async {
     return LdtkComponent(
       await RenderableLdtkMap.fromSimple(fileName),
