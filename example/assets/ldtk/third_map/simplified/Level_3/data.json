@@ -1,0 +1,84 @@
+{
+	"identifier": "Level_3",
+	"uniqueIdentifer": "fd3db340-9f30-11ed-90bd-d7128fb4b064",
+	"x": 512,
+	"y": 0,
+	"width": 256,
+	"height": 256,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "21878160-7820-11ed-8f42-e91a941f333e",
+			"dir": "w"
+		},
+		{
+			"levelIid": "6a489630-9f30-11ed-90bd-cdf9e6c4d574",
+			"dir": "e"
+		},
+		{
+			"levelIid": "93a0c690-9f30-11ed-90bd-4f0d84b0c075",
+			"dir": "s"
+		}
+	],
+	"customFields" : {},
+	"layers": [
+		"Base.png",
+		"Grass_AutoLayer.png",
+		"GrassGrid.png",
+		"Ground.png"
+	],
+	"entities": {
+		"Big_Tree": [
+			{
+				"id": "Big_Tree",
+				"iid": "4c90dc10-9f30-11ed-90bd-956b3c021da4",
+				"layer": "Trees",
+				"x": 120,
+				"y": 32,
+				"width": 48,
+				"height": 48,
+				"color": 12470831,
+				"customFields" : {}
+			}
+		],
+		"Tree_1": [
+			{
+				"id": "Tree_1",
+				"iid": "505202c0-9f30-11ed-90bd-5304f8c29faa",
+				"layer": "Trees",
+				"x": 56,
+				"y": 256,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			}
+		],
+		"Bench": [
+			{
+				"id": "Bench",
+				"iid": "46863a90-9f30-11ed-90bd-6167addbd81b",
+				"layer": "Bench2",
+				"x": 80,
+				"y": 32,
+				"width": 32,
+				"height": 32,
+				"color": 4073265,
+				"customFields" : {}
+			}
+		],
+		"Bush_2": [
+			{
+				"id": "Bush_2",
+				"iid": "55866880-9f30-11ed-90bd-c5b4212512ef",
+				"layer": "Bushes",
+				"x": 136,
+				"y": 248,
+				"width": 16,
+				"height": 16,
+				"color": 14984818,
+				"customFields" : {}
+			}
+		]
+	}
+}

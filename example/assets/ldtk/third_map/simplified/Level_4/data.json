@@ -1,0 +1,27 @@
+{
+	"identifier": "Level_4",
+	"uniqueIdentifer": "6a489630-9f30-11ed-90bd-cdf9e6c4d574",
+	"x": 768,
+	"y": 0,
+	"width": 256,
+	"height": 512,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "fd3db340-9f30-11ed-90bd-d7128fb4b064",
+			"dir": "w"
+		},
+		{
+			"levelIid": "93a0c690-9f30-11ed-90bd-4f0d84b0c075",
+			"dir": "w"
+		}
+	],
+	"customFields" : {},
+	"layers": [
+		"Base.png",
+		"Grass_AutoLayer.png",
+		"GrassGrid.png",
+		"Ground.png"
+	],
+	"entities" : {}
+}
