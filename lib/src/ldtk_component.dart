@@ -7,10 +7,10 @@ import 'package:flame_ldtk/src/renderable_tile_map.dart';
 import 'package:meta/meta.dart';
 
 /// {@template _ldtk_component}
-/// A Flame [Component] to render a LDtk LDtkMap.
+/// A Flame [Component] to render an LDtk map.
 ///
-/// It uses a preloaded [RenderableLdtkMap] to batch rendering calls into
-/// Sprite Batches.
+/// It uses a preloaded [RenderableLdtkMap] to prerender levels into one single
+/// [Sprite].
 /// {@endtemplate}
 class LdtkComponent<T extends FlameGame> extends PositionComponent
     with HasGameRef<T> {
@@ -39,7 +39,8 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
   }
 
   /// {@macro _ldtk_component}
-  LdtkComponent(this.tileMap, {
+  LdtkComponent(
+    this.tileMap, {
     super.position,
     super.scale,
     super.angle,
@@ -57,16 +58,18 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     final topLeft = Vector2.zero();
     final bottomRight = Vector2.zero();
     tileMap.ldtk.levels?.forEach((element) {
-      topLeft.x = min(topLeft.x, element.worldX?.toDouble() ?? 0);
-      topLeft.y = min(topLeft.y, element.worldY?.toDouble() ?? 0);
-      bottomRight.x = max(
-        bottomRight.x,
-        (element.worldX?.toDouble() ?? 0) + (element.pxWid ?? 0),
-      );
-      bottomRight.y = max(
-        bottomRight.y,
-        (element.worldY?.toDouble() ?? 0) + (element.pxHei ?? 0),
-      );
+      topLeft
+        ..x = min(topLeft.x, element.worldX?.toDouble() ?? 0)
+        ..y = min(topLeft.y, element.worldY?.toDouble() ?? 0);
+      bottomRight
+        ..x = max(
+          bottomRight.x,
+          (element.worldX?.toDouble() ?? 0) + (element.pxWid ?? 0),
+        )
+        ..y = max(
+          bottomRight.y,
+          (element.worldY?.toDouble() ?? 0) + (element.pxHei ?? 0),
+        );
     });
     final rect = Rect.fromPoints(topLeft.toOffset(), bottomRight.toOffset());
     return rect.size.toVector2();
@@ -95,7 +98,8 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     tileMap.handleResize(canvasSize);
   }
 
-  static Future<LdtkComponent> loadSimple(String fileName, {
+  static Future<LdtkComponent> loadSimple(
+    String fileName, {
     int? priority,
     Camera? camera,
   }) async {

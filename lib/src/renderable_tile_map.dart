@@ -3,11 +3,12 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/painting.dart';
+import 'package:flame_ldtk/src/ldtk_entity.dart';
 import 'package:ldtk/ldtk.dart';
 
 /// {@template _renderable_ldtk_map}
@@ -35,13 +36,23 @@ class RenderableLdtkMap {
 
   final Sprite? simpleModeSingleImage;
 
+  final Map<int, Image> tilesetsDefinitions;
+
+  final List<LdtkEntity> entities;
+  final Map<String, Sprite> entitiesDefinitions;
+
   /// {@macro _renderable_ldtk_map}
-  RenderableLdtkMap(this.ldtk,
-      {this.camera,
-      this.ldtkPath,
-      this.simpleMode = false,
-      this.simpleModeLayers,
-      this.simpleModeSingleImage}) {
+  RenderableLdtkMap(
+    this.ldtk, {
+    this.camera,
+    this.ldtkPath,
+    this.simpleMode = false,
+    this.simpleModeLayers,
+    this.simpleModeSingleImage,
+    this.tilesetsDefinitions = const {},
+    this.entities = const [],
+    this.entitiesDefinitions = const {},
+  }) {
     _refreshCache();
 
     final backgroundColor = ldtk.bgColor?.replaceFirst('#', '');
@@ -68,17 +79,69 @@ class RenderableLdtkMap {
     final simpleModeLayers = await makeSimpleModeLayers(ldtk, ldtkProjectName);
     final singleImage = makeSingleImage(simpleModeLayers);
 
+    /// get tilesets definition and sprite
+    final tilesetsDefinitions = <int, Image>{};
+
+    for (final tileset in ldtk.defs?.tilesets ?? <TilesetDefinition>[]) {
+      final tilesetImagePath = ldtkPath.resolve(tileset.relPath ?? '');
+      final image = await (Flame.images..prefix = '').load(
+        tilesetImagePath.toFilePath(windows: Platform.isWindows),
+      );
+      tilesetsDefinitions[tileset.uid!] = image;
+    }
+
+    /// get objects definition and sprite
+    final entitiesDefinitions = <String, Sprite>{};
+    for (final entity in ldtk.defs?.entities ?? <EntityDefinition>[]) {
+      entitiesDefinitions[entity.identifier!] = Sprite(
+        tilesetsDefinitions[entity.tilesetId!]!,
+        srcPosition: Vector2(
+          entity.tileRect!.x!.toDouble(),
+          entity.tileRect!.y!.toDouble(),
+        ),
+        srcSize: Vector2(
+          entity.tileRect!.w!.toDouble(),
+          entity.tileRect!.h!.toDouble(),
+        ),
+      );
+    }
+
+    final entities = ldtk.levels!
+        .map(
+          (level) => level.layerInstances!.map(
+            (layer) => layer.entityInstances!.map(
+              (entity) => LdtkEntity(
+                entitiesDefinitions[entity.identifier!]!,
+                entity,
+                Vector2(level.worldX!.toDouble(), level.worldY!.toDouble()),
+              ),
+            ),
+          ),
+        )
+        .flattened
+        .toList()
+        .map(
+          (e) => e.map((e) => e),
+        )
+        .flattened
+        .toList();
+
     return RenderableLdtkMap(
       ldtk,
       ldtkPath: ldtkPath,
       simpleMode: true,
       simpleModeLayers: simpleModeLayers,
       simpleModeSingleImage: Sprite(singleImage),
+      entitiesDefinitions: entitiesDefinitions,
+      entities: entities,
+      tilesetsDefinitions: tilesetsDefinitions,
     );
   }
 
   static Future<List<Sprite>> makeSimpleModeLayers(
-      Ldtk ldtk, String ldtkProjectName) async {
+    Ldtk ldtk,
+    String ldtkProjectName,
+  ) async {
     final simpleModeLayers = <Sprite>[];
     for (final level in ldtk.levels ?? <Level>[]) {
       final levelName = level.identifier;

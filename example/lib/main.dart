@@ -21,6 +21,9 @@ class LdtkGame extends FlameGame {
         await LdtkComponent.loadSimple('third_map.ldtk', camera: camera);
     add(mapComponent);
 
+    final entities = mapComponent.tileMap.entities.reversed;
+    addAll(entities);
+
     // final objGroup =
     //     mapComponent.tileMap.getLayer<ObjectGroup>('AnimatedCoins');
     // final coins = await Flame.images.load('coins.png');
