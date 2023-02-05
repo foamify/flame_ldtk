@@ -14,7 +14,7 @@ Inspired by flame_tiled
 - [ ] Worlds (still experimental in LDtk)
 - [ ] World depth
 - [ ] Linear world layout
-- [X] Free world layout
+- [ ] Free world layout (partially supported, on super simple export mode)
 - [ ] Gridvania world layout
 - [ ] Background images
 - [ ] More to be listed
