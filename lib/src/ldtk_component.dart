@@ -7,10 +7,10 @@ import 'package:flame_ldtk/src/renderable_tile_map.dart';
 import 'package:meta/meta.dart';
 
 /// {@template _ldtk_component}
-/// A Flame [Component] to render a LDtk LDtkMap.
+/// A Flame [Component] to render an LDtk map.
 ///
-/// It uses a preloaded [RenderableLdtkMap] to batch rendering calls into
-/// Sprite Batches.
+/// It uses a preloaded [RenderableLdtkMap] to prerender levels into one single
+/// [Sprite].
 /// {@endtemplate}
 class LdtkComponent<T extends FlameGame> extends PositionComponent
     with HasGameRef<T> {
@@ -51,23 +51,25 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     size = computeSize(tileMap);
   }
 
-  /// Iterates all levels, find the fathest topleft and bottomright point,
-  /// and use those to make [Rect];
+  /// Iterate all levels, find the farthest topleft and bottomright point,
+  /// and then use those to make [Rect];
   @visibleForTesting
   static Vector2 computeSize(RenderableLdtkMap tileMap) {
     final topLeft = Vector2.zero();
     final bottomRight = Vector2.zero();
     tileMap.ldtk.levels?.forEach((element) {
-      topLeft.x = min(topLeft.x, element.worldX?.toDouble() ?? 0);
-      topLeft.y = min(topLeft.y, element.worldY?.toDouble() ?? 0);
-      bottomRight.x = max(
-        bottomRight.x,
-        (element.worldX?.toDouble() ?? 0) + (element.pxWid ?? 0),
-      );
-      bottomRight.y = max(
-        bottomRight.y,
-        (element.worldY?.toDouble() ?? 0) + (element.pxHei ?? 0),
-      );
+      topLeft
+        ..x = min(topLeft.x, element.worldX?.toDouble() ?? 0)
+        ..y = min(topLeft.y, element.worldY?.toDouble() ?? 0);
+      bottomRight
+        ..x = max(
+          bottomRight.x,
+          (element.worldX?.toDouble() ?? 0) + (element.pxWid ?? 0),
+        )
+        ..y = max(
+          bottomRight.y,
+          (element.worldY?.toDouble() ?? 0) + (element.pxHei ?? 0),
+        );
     });
     final rect = Rect.fromPoints(topLeft.toOffset(), bottomRight.toOffset());
     return rect.size.toVector2();
@@ -96,21 +98,10 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     tileMap.handleResize(canvasSize);
   }
 
-  /// Loads a [LdtkComponent] from a file.
-  static Future<LdtkComponent> load(
-    String fileName, {
-    int? priority,
-    bool? simpleMode,
-  }) async {
-    return LdtkComponent(
-      await RenderableLdtkMap.fromFile(fileName),
-      priority: priority,
-    );
-  }
-
   static Future<LdtkComponent> loadSimple(
     String fileName, {
     int? priority,
+    Camera? camera,
   }) async {
     return LdtkComponent(
       await RenderableLdtkMap.fromSimple(fileName),

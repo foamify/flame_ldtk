@@ -1,0 +1,133 @@
+{
+	"identifier": "Level_2",
+	"uniqueIdentifer": "d34899e0-9f30-11ed-90bd-ab30e27b4056",
+	"x": 0,
+	"y": 256,
+	"width": 256,
+	"height": 256,
+	"bgColor": "#696A79",
+	"neighbourLevels": [
+		{
+			"levelIid": "54826920-7820-11ed-a8bc-7757f6cf8f2e",
+			"dir": "n"
+		},
+		{
+			"levelIid": "93a0c690-9f30-11ed-90bd-4f0d84b0c075",
+			"dir": "e"
+		}
+	],
+	"customFields" : {},
+	"layers": [
+		"Base.png",
+		"Grass_AutoLayer.png",
+		"GrassGrid.png",
+		"Ground.png"
+	],
+	"entities": {
+		"Tree_1": [
+			{
+				"id": "Tree_1",
+				"iid": "84af7cd0-9f30-11ed-90bd-1d97b58b4ca5",
+				"layer": "Trees",
+				"x": 40,
+				"y": 48,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			},
+			{
+				"id": "Tree_1",
+				"iid": "84f908f0-9f30-11ed-90bd-65ac5d691170",
+				"layer": "Trees",
+				"x": 72,
+				"y": 176,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			},
+			{
+				"id": "Tree_1",
+				"iid": "855c85b0-9f30-11ed-90bd-cde693e9c447",
+				"layer": "Trees",
+				"x": 40,
+				"y": 128,
+				"width": 16,
+				"height": 32,
+				"color": 14120515,
+				"customFields" : {}
+			}
+		],
+		"Big_Tree": [
+			{
+				"id": "Big_Tree",
+				"iid": "887b78f0-9f30-11ed-90bd-9de08478a3b1",
+				"layer": "Trees",
+				"x": 216,
+				"y": 64,
+				"width": 48,
+				"height": 48,
+				"color": 12470831,
+				"customFields" : {}
+			}
+		],
+		"Bush_2": [
+			{
+				"id": "Bush_2",
+				"iid": "7d097ad0-9f30-11ed-90bd-7196684bb5e0",
+				"layer": "Bushes",
+				"x": 72,
+				"y": 72,
+				"width": 16,
+				"height": 16,
+				"color": 14984818,
+				"customFields" : {}
+			},
+			{
+				"id": "Bush_2",
+				"iid": "7d5fd830-9f30-11ed-90bd-c92330c1def0",
+				"layer": "Bushes",
+				"x": 104,
+				"y": 184,
+				"width": 16,
+				"height": 16,
+				"color": 14984818,
+				"customFields" : {}
+			},
+			{
+				"id": "Bush_2",
+				"iid": "7d9fa050-9f30-11ed-90bd-e591e98c68ae",
+				"layer": "Bushes",
+				"x": 56,
+				"y": 200,
+				"width": 16,
+				"height": 16,
+				"color": 14984818,
+				"customFields" : {}
+			},
+			{
+				"id": "Bush_2",
+				"iid": "7e16a510-9f30-11ed-90bd-1fc66bc4bb2b",
+				"layer": "Bushes",
+				"x": 184,
+				"y": 40,
+				"width": 16,
+				"height": 16,
+				"color": 14984818,
+				"customFields" : {}
+			},
+			{
+				"id": "Bush_2",
+				"iid": "7e684780-9f30-11ed-90bd-e91c102d5226",
+				"layer": "Bushes",
+				"x": 216,
+				"y": 104,
+				"width": 16,
+				"height": 16,
+				"color": 14984818,
+				"customFields" : {}
+			}
+		]
+	}
+}

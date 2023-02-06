@@ -10,6 +10,10 @@
 		{
 			"levelIid": "21878160-7820-11ed-8f42-e91a941f333e",
 			"dir": "e"
+		},
+		{
+			"levelIid": "d34899e0-9f30-11ed-90bd-ab30e27b4056",
+			"dir": "s"
 		}
 	],
 	"customFields" : {},
@@ -20,35 +24,11 @@
 		"Ground.png"
 	],
 	"entities": {
-		"Bench": [
-			{
-				"id": "Bench",
-				"iid": "c1ec7780-7820-11ed-a8bc-5b59d2ea5050",
-				"layer": "Bench",
-				"x": 32,
-				"y": 32,
-				"width": 32,
-				"height": 32,
-				"color": 4073265,
-				"customFields" : {}
-			},
-			{
-				"id": "Bench",
-				"iid": "bb6d6950-7820-11ed-a8bc-658b86dc486a",
-				"layer": "Bushes",
-				"x": 128,
-				"y": 96,
-				"width": 32,
-				"height": 32,
-				"color": 4073265,
-				"customFields" : {}
-			}
-		],
 		"Big_Tree": [
 			{
 				"id": "Big_Tree",
-				"iid": "996dfa80-7820-11ed-a8bc-6f0d7297dc9f",
-				"layer": "Bench",
+				"iid": "a04f05e0-9f30-11ed-90bd-895b9fe27b67",
+				"layer": "Trees2",
 				"x": 72,
 				"y": 48,
 				"width": 48,
@@ -98,6 +78,30 @@
 				"width": 48,
 				"height": 48,
 				"color": 12470831,
+				"customFields" : {}
+			}
+		],
+		"Bench": [
+			{
+				"id": "Bench",
+				"iid": "c1ec7780-7820-11ed-a8bc-5b59d2ea5050",
+				"layer": "Bench",
+				"x": 32,
+				"y": 32,
+				"width": 32,
+				"height": 32,
+				"color": 4073265,
+				"customFields" : {}
+			},
+			{
+				"id": "Bench",
+				"iid": "bb6d6950-7820-11ed-a8bc-658b86dc486a",
+				"layer": "Bushes",
+				"x": 128,
+				"y": 96,
+				"width": 32,
+				"height": 32,
+				"color": 4073265,
 				"customFields" : {}
 			}
 		],

@@ -43,3 +43,8 @@ _build/
 # Custom
 lib/generated_plugin_registrant.dart
 examples/**/.gitignore
+/example/linux/
+/example/macos/
+/example/windows/
+/example/android/
+/example/ios/

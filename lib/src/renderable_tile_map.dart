@@ -1,47 +1,22 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
+import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'package:flame_ldtk/src/extensions.dart';
-import 'package:flame_ldtk/src/mutable_transform.dart';
-import 'package:flame_ldtk/src/renderable_layers/renderable_layer.dart';
-import 'package:flame_ldtk/src/renderable_layers/renderable_level.dart';
-import 'package:flame_ldtk/src/renderable_layers/tiles_layer.dart';
-import 'package:flame_ldtk/src/tile_atlas.dart';
-import 'package:flame_ldtk/src/tile_stack.dart';
-import 'package:flutter/painting.dart';
+import 'package:flame_ldtk/src/ldtk_entity.dart';
 import 'package:ldtk/ldtk.dart';
 
 /// {@template _renderable_ldtk_map}
-/// This is a wrapper over LDtk's [LDtkMap] which can be rendered to a
-/// canvas.
-///
-/// Internally each layer is wrapped with a [RenderableLayer] which handles
-/// rendering and caching for supported layer types:
-///  - [TilesLayer] is supported with pre-computed SpriteBatches
-///  - [IntGridLayer] is supported with [paintImage]
-///
-/// This also supports the following properties:
-///  - [LDtkMap.backgroundColor]
-///  - [Layer.opacity]
-///  - [Layer.offsetX]
-///  - [Layer.offsetY]
-///  - [Layer.parallaxX] (only supported if [Camera] is supplied)
-///  - [Layer.parallaxY] (only supported if [Camera] is supplied)
 ///
 /// {@endtemplate}
 class RenderableLdtkMap {
   /// [Ldtk] instance for this map.
   final Ldtk ldtk;
-
-  /// Levels to be rendered
-  final List<RenderableLevel> renderableLevels;
-
-  /// The target size for each tile in the tiled map.
-  final Vector2? destTileSize;
 
   /// Camera used for determining the current viewport for layer rendering.
   /// Optional, but required for parallax support
@@ -59,15 +34,24 @@ class RenderableLdtkMap {
 
   final List<Sprite>? simpleModeLayers;
 
+  final Sprite? simpleModeSingleImage;
+
+  final Map<int, Image> tilesetsDefinitions;
+
+  final List<LdtkEntity> entities;
+  final Map<String, Sprite> entitiesDefinitions;
+
   /// {@macro _renderable_ldtk_map}
   RenderableLdtkMap(
-    this.ldtk,
-    this.renderableLevels,
-    this.destTileSize, {
+    this.ldtk, {
     this.camera,
     this.ldtkPath,
     this.simpleMode = false,
     this.simpleModeLayers,
+    this.simpleModeSingleImage,
+    this.tilesetsDefinitions = const {},
+    this.entities = const [],
+    this.entitiesDefinitions = const {},
   }) {
     _refreshCache();
 
@@ -80,155 +64,6 @@ class RenderableLdtkMap {
     }
   }
 
-  /// Changes the visibility of the corresponding layer, if different
-  void setLayerVisibility(String levelId, int layerId, bool visibility) {
-    final layer = ldtk.levels
-        ?.getLevelByIid(levelId)
-        ?.layerInstances
-        ?.getLayerByUid(layerId);
-    if (layer?.visible != visibility && layer != null) {
-      layer.visible = visibility;
-      _refreshCache();
-    }
-  }
-
-  /// Gets the visibility of the corresponding layer
-  bool getLayerVisibility(String levelId, int layerId) {
-    return ldtk.levels
-            ?.getLevelByIid(levelId)
-            ?.layerInstances
-            ?.getLayerByUid(layerId)
-            ?.visible ??
-        false;
-  }
-
-  /// Gets the id  of the corresponding layer at the given position
-  TileInstance? getTileData({
-    required int layerId,
-    required int x,
-    required int y,
-  }) {
-    final layer = ldtk.getLayerByIid(layerId);
-    if (layer?.type == 'Tiles') {
-      return layer?.gridTiles?.singleWhere(
-        (element) => element.px?.first == x && element.px?.last == y,
-      );
-    }
-    return null;
-  }
-
-  /// Select a group of tiles from the coordinates [x] and [y].
-  ///
-  /// If [all] is set to true, every renderable tile from the map is collected.
-  ///
-  /// If the [identifiers] or [iids] sets are not empty, any layer with matching
-  /// name or id will have their renderable tiles collected. If the matching
-  /// layer is a group layer, all layers in the group will have their tiles
-  /// collected.
-  TileStack tileStack(
-    int x,
-    int y, {
-    Set<String> identifiers = const {},
-    Set<String> iids = const {},
-    bool all = false,
-  }) {
-    return TileStack(
-      _tileStack(
-        renderableLevels,
-        x,
-        y,
-        identifiers: identifiers,
-        iids: iids,
-        all: all,
-      ),
-    );
-  }
-
-  /// Recursive support for [tileStack]
-  List<MutableRSTransform> _tileStack(
-    List<RenderableLevel> levels,
-    int x,
-    int y, {
-    Set<String> identifiers = const {},
-    Set<String> iids = const {},
-    bool all = false,
-  }) {
-    final tiles = <MutableRSTransform>[];
-    for (final level in levels) {
-      for (final layer in level.children) {
-        if (layer is TilesLayer) {
-          if (!(all ||
-              identifiers.contains(layer.layer.identifier) ||
-              iids.contains(layer.layer.iid))) {
-            continue;
-          }
-
-          if (layer.layer.gridTiles != null) {
-            tiles.add(layer.indexes[x][y]!);
-          }
-        }
-      }
-    }
-    return tiles;
-  }
-
-  /// Parses a file returning a [RenderableLdtkMap].
-  ///
-  /// NOTE: this method looks for files under the path "assets/ldtk/".
-  static Future<RenderableLdtkMap> fromFile(
-    String fileName, {
-    Camera? camera,
-  }) async {
-    final ldtkPath = Uri.file(
-      'assets/ldtk/$fileName',
-      windows: Platform.isWindows,
-    );
-    final contents = await Flame.bundle.loadString(ldtkPath.path);
-    return fromString(
-      contents,
-      camera: camera,
-      path: ldtkPath,
-    );
-  }
-
-  /// Parses a string returning a [RenderableLdtkMap].
-  static Future<RenderableLdtkMap> fromString(
-    String contents, {
-    Camera? camera,
-    Uri? path,
-  }) async {
-    final ldtk = Ldtk.fromRawJson(contents);
-    return fromLdtk(ldtk, camera: camera, path: path);
-  }
-
-  /// Parses an [Ldtk] returning a [RenderableLdtkMap].
-  static Future<RenderableLdtkMap> fromLdtk(
-    Ldtk ldtk, {
-    Camera? camera,
-    Uri? path,
-  }) async {
-    // map.tilesets.sort((l, r) => (l.firstGid ?? 0) - (r.firstGid ?? 0));
-
-    final renderableLevels = await _renderableLevels(
-      ldtk.levels,
-      null,
-      ldtk,
-      camera,
-      path,
-    );
-
-    return RenderableLdtkMap(
-      ldtk,
-      renderableLevels,
-      Vector2(
-        ldtk.defaultGridSize?.toDouble() ?? 0,
-        ldtk.defaultGridSize?.toDouble() ?? 0,
-      ),
-      camera: camera,
-      ldtkPath: path,
-    );
-  }
-
   static Future<RenderableLdtkMap> fromSimple(
     String fileName, {
     Camera? camera,
@@ -239,18 +74,85 @@ class RenderableLdtkMap {
     );
     final contents = await Flame.bundle.loadString(ldtkPath.path);
     final ldtk = Ldtk.fromRawJson(contents);
+    final ldtkProjectName = fileName.substring(0, fileName.length - 5);
 
+    final simpleModeLayers = await makeSimpleModeLayers(ldtk, ldtkProjectName);
+    final singleImage = makeSingleImage(simpleModeLayers);
+
+    /// get tilesets definition and sprite
+    final tilesetsDefinitions = <int, Image>{};
+
+    for (final tileset in ldtk.defs?.tilesets ?? <TilesetDefinition>[]) {
+      final tilesetImagePath = ldtkPath.resolve(tileset.relPath ?? '');
+      final image = await (Flame.images..prefix = '').load(
+        tilesetImagePath.toFilePath(windows: Platform.isWindows),
+      );
+      tilesetsDefinitions[tileset.uid!] = image;
+    }
+
+    /// get objects definition and sprite
+    final entitiesDefinitions = <String, Sprite>{};
+    for (final entity in ldtk.defs?.entities ?? <EntityDefinition>[]) {
+      entitiesDefinitions[entity.identifier!] = makeEntityImage(
+        Sprite(
+          tilesetsDefinitions[entity.tilesetId!]!,
+          srcPosition: Vector2(
+            entity.tileRect!.x!.toDouble(),
+            entity.tileRect!.y!.toDouble(),
+          ),
+          srcSize: Vector2(
+            entity.tileRect!.w!.toDouble(),
+            entity.tileRect!.h!.toDouble(),
+          ),
+        ),
+      );
+    }
+
+    var entities = ldtk.levels!
+        .map(
+          (level) => level.layerInstances!.map(
+            (layer) => layer.entityInstances!.map(
+              (entity) => LdtkEntity(
+                entitiesDefinitions[entity.identifier!]!,
+                entity,
+                Vector2(level.worldX!.toDouble(), level.worldY!.toDouble()),
+              ),
+            ),
+          ),
+        )
+        .flattened
+        .toList()
+        .map(
+          (e) => e.map((e) => e),
+        )
+        .flattened
+        .toList();
+
+    return RenderableLdtkMap(
+      ldtk,
+      ldtkPath: ldtkPath,
+      simpleMode: true,
+      simpleModeLayers: simpleModeLayers,
+      simpleModeSingleImage: Sprite(singleImage),
+      entitiesDefinitions: entitiesDefinitions,
+      entities: entities,
+      tilesetsDefinitions: tilesetsDefinitions,
+    );
+  }
+
+  static Future<List<Sprite>> makeSimpleModeLayers(
+    Ldtk ldtk,
+    String ldtkProjectName,
+  ) async {
     final simpleModeLayers = <Sprite>[];
     for (final level in ldtk.levels ?? <Level>[]) {
       final levelName = level.identifier;
-      final ldtkProjectName = fileName.substring(0, fileName.length - 5);
 
-      // The map contains one image, so its either an atlas already, or a
-      // really boring map.
       final image = await (Flame.images..prefix = '').load(
         'assets/ldtk/$ldtkProjectName/simplified/$levelName/_composite.png',
         key: levelName,
       );
+      // print(levelName);
       simpleModeLayers.add(
         Sprite(
           image,
@@ -261,88 +163,60 @@ class RenderableLdtkMap {
         ),
       );
     }
+    return simpleModeLayers;
+  }
 
-    return RenderableLdtkMap(
-      ldtk,
-      [],
-      null,
-      camera: camera,
-      ldtkPath: ldtkPath,
-      simpleMode: true,
-      simpleModeLayers: simpleModeLayers,
+  static Image makeSingleImage(List<Sprite> simpleModeLayers) {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+    var imageTopLeft = simpleModeLayers.first.srcPosition.toOffset();
+    var imageBottomRight = simpleModeLayers.first.srcPosition.toOffset();
+    for (final sprite in simpleModeLayers) {
+      canvas.drawImage(
+        sprite.image,
+        Offset(sprite.srcPosition.x, sprite.srcPosition.y),
+        Paint(),
+      );
+      imageTopLeft = Offset(
+        min(imageTopLeft.dx, sprite.srcPosition.x),
+        min(imageTopLeft.dy, sprite.srcPosition.y),
+      );
+      imageBottomRight = Offset(
+        max(imageBottomRight.dx, sprite.srcSize.x + sprite.srcPosition.x),
+        max(imageBottomRight.dy, sprite.srcSize.y + sprite.srcPosition.y),
+      );
+    }
+    final imageSize = Rect.fromPoints(imageTopLeft, imageBottomRight).size;
+    final picture = recorder.endRecording();
+    final compiledImage = picture.toImageSync(
+      imageSize.width.round(),
+      imageSize.height.round(),
     );
+    picture.dispose();
+    return compiledImage;
   }
 
-  static Future<List<RenderableLevel<Level>>> _renderableLevels(
-    List<Level>? levels,
-    World? parent,
-    Ldtk ldtk,
-    Camera? camera,
-    Uri? ldtkPath,
-  ) async {
-    final levelLayers = <RenderableLevel<Level>>[];
-    if (levels != null) {
-      for (final level in levels) {
-        final renderableLevel = RenderableLevel(
-          level,
-          parent,
-          ldtk,
-        );
-        renderableLevel.children = await _renderableLayers(
-          level.layerInstances,
-          level,
-          ldtk,
-          camera,
-          ldtkPath: ldtkPath,
-        );
-        levelLayers.add(renderableLevel);
-      }
-    }
-    return levelLayers;
-  }
-
-  static Future<List<RenderableLayer<LayerInstance>>> _renderableLayers(
-    List<LayerInstance>? layers,
-    Level? parent,
-    Ldtk map,
-    Camera? camera, {
-    TileAtlas? atlas,
-    Uri? ldtkPath,
-  }) async {
-    final renderLayers = <RenderableLayer<LayerInstance>>[];
-    if (layers != null) {
-      for (final layer in layers.where((layer) => layer.visible ?? false)) {
-        renderLayers.add(
-          await TilesLayer.load(
-            layer,
-            parent,
-            map,
-            atlas?.clone(),
-            ldtkPath,
-          ),
-        );
-      }
-    }
-    return renderLayers;
+  static Sprite makeEntityImage(Sprite sprite) {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+    var imageTopLeft = sprite.srcPosition.toOffset();
+    var imageBottomRight = (sprite.srcPosition + sprite.srcSize).toOffset();
+    final imageSize = Rect.fromPoints(imageTopLeft, imageBottomRight).size;
+    sprite.render(canvas);
+    final picture = recorder.endRecording();
+    final compiledImage = picture.toImageSync(
+      imageSize.width.round(),
+      imageSize.height.round(),
+    );
+    picture.dispose();
+    return Sprite(compiledImage);
   }
 
   /// Handle game resize and propagate it to renderable layers
-  void handleResize(Vector2 canvasSize) {
-    if (!simpleMode) {
-      for (final layer in renderableLevels) {
-        layer.handleResize(canvasSize);
-      }
-    }
-  }
+  void handleResize(Vector2 canvasSize) {}
 
   /// Rebuilds the cache for rendering
-  void _refreshCache() {
-    if (!simpleMode) {
-      for (final level in renderableLevels) {
-        level.refreshCache();
-      }
-    }
-  }
+  void _refreshCache() {}
 
   /// Renders each renderable layer in the same order specified by the LDtk map
   void render(Canvas c) {
@@ -350,25 +224,20 @@ class RenderableLdtkMap {
       c.drawPaint(_backgroundPaint!);
     }
 
-    if (simpleMode) {
-      for (final sprite in simpleModeLayers ?? <Sprite>[]) {
-        sprite.render(c);
-      }
-    } else {
-      // Paint each layer in reverse order, because the last layers should be
-      // rendered beneath the first layers
-      for (final level in renderableLevels) {
-        level.render(c, camera);
-      }
+    // for (final sprite in simpleModeLayers ?? <Sprite>[]) {
+    //   c.drawImage(
+    //     sprite.image,
+    //     Offset(sprite.srcPosition.x, sprite.srcPosition.y),
+    //     Paint(),
+    //   );
+    // }
+
+    if (simpleModeSingleImage != null) {
+      c.drawImage(simpleModeSingleImage!.image, Offset.zero, Paint());
+      // if (simpleModeLayers != null) {
+      //   c.drawImage(makeSingleImage(simpleModeLayers!), Offset.zero, Paint());
     }
   }
 
-  void update(double dt) {
-    if (!simpleMode) {
-      // Then every layer.
-      for (final layer in renderableLevels) {
-        layer.update(dt);
-      }
-    }
-  }
+  void update(double dt) {}
 }
