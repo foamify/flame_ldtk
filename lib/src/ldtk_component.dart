@@ -9,11 +9,24 @@ import 'package:meta/meta.dart';
 /// {@template _ldtk_component}
 /// A Flame [Component] to render an LDtk map.
 ///
-/// It uses a preloaded [RenderableLdtkMap] to prerender levels into one single
+/// It uses a [RenderableLdtkMap] that prerenders levels into one single
 /// [Sprite].
 /// {@endtemplate}
 class LdtkComponent<T extends FlameGame> extends PositionComponent
     with HasGameRef<T> {
+  /// {@macro _ldtk_component}
+  LdtkComponent(
+    this.tileMap, {
+    super.position,
+    super.scale,
+    super.angle,
+    super.anchor,
+    super.children,
+    super.priority,
+  }) {
+    size = computeSize(tileMap);
+  }
+
   /// Map instance of this component.
   RenderableLdtkMap tileMap;
 
@@ -36,19 +49,6 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
   @override
   set height(double h) {
     // Intentionally left empty.
-  }
-
-  /// {@macro _ldtk_component}
-  LdtkComponent(
-    this.tileMap, {
-    super.position,
-    super.scale,
-    super.angle,
-    super.anchor,
-    super.children,
-    super.priority,
-  }) {
-    size = computeSize(tileMap);
   }
 
   /// Iterate all levels, find the farthest topleft and bottomright point,
@@ -93,18 +93,24 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
   }
 
   @override
-  void onGameResize(Vector2 canvasSize) {
-    super.onGameResize(canvasSize);
-    tileMap.handleResize(canvasSize);
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    tileMap.handleResize(size);
   }
 
-  static Future<LdtkComponent> loadSimple(
+  static Future<LdtkComponent> load(
     String fileName, {
     int? priority,
     Camera? camera,
+    bool simpleMode = false,
+    bool compositeAllLevels = false,
   }) async {
     return LdtkComponent(
-      await RenderableLdtkMap.fromSimple(fileName),
+      await RenderableLdtkMap.fromFile(
+        fileName,
+        simpleMode: simpleMode,
+        compositeAllLevels: compositeAllLevels,
+      ),
       priority: priority,
     );
   }

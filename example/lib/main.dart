@@ -21,8 +21,12 @@ class LdtkGame extends FlameGame {
 
     add(FpsTextComponent());
 
-    mapComponent =
-        await LdtkComponent.loadSimple('third_map.ldtk', camera: camera);
+    mapComponent = await LdtkComponent.load(
+      'third_map.ldtk',
+      camera: camera,
+      simpleMode: true,
+      // compositeAllLevels: true,
+    );
     add(mapComponent);
 
     final entities = mapComponent.tileMap.entities.reversed;
@@ -60,6 +64,8 @@ class LdtkGame extends FlameGame {
   void update(double dt) {
     super.update(dt);
 
+    camera.moveTo(Vector2(.2, 0));
+
     time += dt;
     var imageTopLeft = Offset.zero;
     var imageBottomRight = Offset.zero;
@@ -75,7 +81,7 @@ class LdtkGame extends FlameGame {
       );
     }
 
-    final imageSize = Rect.fromPoints(imageTopLeft, imageBottomRight).size;
+    // final imageSize = Rect.fromPoints(imageTopLeft, imageBottomRight).size;
     // Pan the camera down and right for 10 seconds, then reverse
     if (time % 20 < 10) {
       cameraTarget.x = imageBottomRight.dx;

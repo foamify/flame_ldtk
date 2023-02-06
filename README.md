@@ -6,16 +6,17 @@ Inspired by flame_tiled
 
 ## Features
 
-- [X] Super simple export mode
-- [ ] Normal export mode (use tiles instead of composite images)
+- [X] Free world layout - Super simple mode
+- [X] Free world layout
+- [ ] Linear world layout - Super simple mode
+- [ ] Linear world layout
+- [ ] Gridvania world layout - Super simple mode
+- [ ] Gridvania world layout
 - [X] Load entities
 - [X] Entity fields (comes with `ldtk.dart`)
 - [ ] Separate `*.ldtkl` levels
 - [ ] Worlds (still experimental in LDtk)
 - [ ] World depth
-- [ ] Linear world layout
-- [ ] Free world layout (partially supported, on super simple export mode)
-- [ ] Gridvania world layout
 - [ ] Background images
 - [ ] More to be listed
 
