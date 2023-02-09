@@ -17,8 +17,8 @@ class LdtkLevel extends PositionComponent {
   }) {
     size = sprite.srcSize;
     position = Vector2(
-      level.worldX?.toDouble() ?? 0,
-      level.worldY?.toDouble() ?? 0,
+      level?.worldX?.toDouble() ?? sprite.srcPosition.x,
+      level?.worldY?.toDouble() ?? sprite.srcPosition.y,
     );
   }
 
@@ -26,7 +26,7 @@ class LdtkLevel extends PositionComponent {
   Sprite sprite;
 
   /// [Level] information
-  Level level;
+  Level? level;
 
   /// Renders all layers at once
   @override

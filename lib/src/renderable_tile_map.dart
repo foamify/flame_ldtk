@@ -23,7 +23,6 @@ class RenderableLdtkMap {
     this.camera,
     this.ldtkPath,
     this.simpleMode = false,
-    this.simpleModeLevels,
     this.worldComponents,
     this.tilesetDefinitions = const {},
     this.entities = const [],
@@ -43,8 +42,6 @@ class RenderableLdtkMap {
 
   // final Map<Tile, TileFrames> animationFrames;
   final bool simpleMode;
-
-  final List<Sprite>? simpleModeLevels;
 
   final List<LdtkWorld>? worldComponents;
 
@@ -99,7 +96,7 @@ class RenderableLdtkMap {
         ? ldtk.worlds?.map((e) => e.levels ?? []).toList() ?? <List<Level>>[]
         : [ldtk.levels ?? <Level>[]];
 
-    List<Sprite>? simpleModeLayers;
+    List<LdtkLevel>? simpleModeLevels;
     final worldComponents = <LdtkWorld>[];
 
     /// get tilesets definition and sprite
@@ -156,9 +153,22 @@ class RenderableLdtkMap {
 
       List<LdtkLevel>? ldtkLevels;
       if (simpleMode) {
-        simpleModeLayers = await makeSimpleModeLayers(levels, ldtkProjectName);
+        simpleModeLevels = await makeSimpleModeLevels(levels, ldtkProjectName);
         if (compositeAllLevels) {
-          simpleModeLayers = [Sprite(makeSingleImage(simpleModeLayers))];
+          simpleModeLevels = [
+            LdtkLevel(
+              Sprite(
+                makeSingleImage(
+                  simpleModeLevels
+                      .map(
+                        (e) => Sprite(e.sprite.image, srcPosition: e.position),
+                      )
+                      .toList(),
+                ),
+              ),
+              null,
+            )
+          ];
         }
       } else {
         ldtkLevels = [];
@@ -239,44 +249,44 @@ class RenderableLdtkMap {
                 .toList(),
           ),
         );
-        for (final level in ldtkLevels) {
-          level.sprite.image.dispose();
-        }
       }
-      worldComponents.add(LdtkWorld(sprite, ldtkLevels ?? [], entities));
+      worldComponents.add(
+        LdtkWorld(
+          sprite,
+          simpleMode ? simpleModeLevels ?? [] : ldtkLevels ?? [],
+          entities,
+        ),
+      );
     }
 
     return RenderableLdtkMap(
       ldtk,
       ldtkPath: ldtkPath,
       simpleMode: true,
-      simpleModeLevels: simpleModeLayers,
       worldComponents: worldComponents,
       entityDefinitions: entitiesDefinitions,
       tilesetDefinitions: tilesetsDefinitions,
     );
   }
 
-  static Future<List<Sprite>> makeSimpleModeLayers(
+  static Future<List<LdtkLevel>> makeSimpleModeLevels(
     List<Level> levels,
     String ldtkProjectName,
   ) async {
-    final simpleModeLayers = <Sprite>[];
+    final simpleModeLayers = <LdtkLevel>[];
     for (final level in levels) {
       final levelName = level.identifier;
-
       final image = await (Flame.images..prefix = '').load(
         'assets/ldtk/$ldtkProjectName/simplified/$levelName/_composite.png',
         key: levelName,
       );
       // print(levelName);
       simpleModeLayers.add(
-        Sprite(
-          image,
-          srcPosition: Vector2(
-            level.worldX?.toDouble() ?? 0,
-            level.worldY?.toDouble() ?? 0,
+        LdtkLevel(
+          Sprite(
+            image,
           ),
+          level,
         ),
       );
     }
@@ -335,18 +345,8 @@ class RenderableLdtkMap {
 
   /// Renders all world components at once
   void render(Canvas canvas) {
-    if (simpleModeLevels != null) {
-      for (final sprite in simpleModeLevels ?? <Sprite>[]) {
-        canvas.drawImage(
-          sprite.image,
-          Offset(sprite.srcPosition.x, sprite.srcPosition.y),
-          Paint(),
-        );
-      }
-    } else {
-      for (final world in worldComponents ?? <LdtkWorld>[]) {
-        world.render(canvas);
-      }
+    for (final world in worldComponents ?? <LdtkWorld>[]) {
+      world.render(canvas);
     }
   }
 

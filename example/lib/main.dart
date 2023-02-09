@@ -1,4 +1,3 @@
-
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
@@ -31,8 +30,11 @@ class LdtkGame extends FlameGame {
       // simpleMode: true,
       // compositeAllLevels: true,
     );
-    // add(mapComponent);
 
+    // add(mapComponent);
+    // add(mapComponent.tileMap.worldComponents!.first);
+    // add(mapComponent.tileMap.worldComponents!.first.levels.first);
+    // add(mapComponent.tileMap.worldComponents!.first.levels.last);
     addAll(
       mapComponent.tileMap.worldComponents
               ?.map((e) => e.levels)
@@ -40,6 +42,7 @@ class LdtkGame extends FlameGame {
               .toList() ??
           <Component>[],
     );
+
     addAll(
       mapComponent.tileMap.worldComponents
               ?.map((e) => e.entities.reversed)
@@ -52,7 +55,7 @@ class LdtkGame extends FlameGame {
     //     mapComponent.tileMap.getLayer<ObjectGroup>('AnimatedCoins');
     // final coins = await Flame.images.load('coins.png');
 
-    camera.zoom = 1;
+    // camera.zoom = .5;
     camera.viewport = FixedResolutionViewport(Vector2(512, 256));
 
     // We are 100% sure that an object layer named `AnimatedCoins`
