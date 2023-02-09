@@ -1,6 +1,8 @@
-import 'dart:math';
 
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame_ldtk/flame_ldtk.dart';
 import 'package:flutter/widgets.dart' hide Animation, Image;
@@ -22,22 +24,36 @@ class LdtkGame extends FlameGame {
     add(FpsTextComponent());
 
     mapComponent = await LdtkComponent.load(
+      // 'linear.ldtk',
       'third_map.ldtk',
+      // 'map_4.ldtk',
       camera: camera,
-      simpleMode: true,
+      // simpleMode: true,
       // compositeAllLevels: true,
     );
-    add(mapComponent);
+    // add(mapComponent);
 
-    final entities = mapComponent.tileMap.entities.reversed;
-    addAll(entities);
+    addAll(
+      mapComponent.tileMap.worldComponents
+              ?.map((e) => e.levels)
+              .flattened
+              .toList() ??
+          <Component>[],
+    );
+    addAll(
+      mapComponent.tileMap.worldComponents
+              ?.map((e) => e.entities.reversed)
+              .flattened
+              .toList() ??
+          <Component>[],
+    );
 
     // final objGroup =
     //     mapComponent.tileMap.getLayer<ObjectGroup>('AnimatedCoins');
     // final coins = await Flame.images.load('coins.png');
 
     camera.zoom = 1;
-    camera.viewport = FixedResolutionViewport(Vector2(256, 256));
+    camera.viewport = FixedResolutionViewport(Vector2(512, 256));
 
     // We are 100% sure that an object layer named `AnimatedCoins`
     // exists in the example `map.tmx`.
@@ -64,28 +80,11 @@ class LdtkGame extends FlameGame {
   void update(double dt) {
     super.update(dt);
 
-    camera.moveTo(Vector2(.2, 0));
-
     time += dt;
-    var imageTopLeft = Offset.zero;
-    var imageBottomRight = Offset.zero;
 
-    for (final level in mapComponent.tileMap.ldtk.levels!) {
-      imageTopLeft = Offset(
-        min(imageTopLeft.dx, level.worldX!.toDouble()),
-        min(imageTopLeft.dy, level.worldY!.toDouble()),
-      );
-      imageBottomRight = Offset(
-        max(imageBottomRight.dx, level.pxWid! + level.worldX!.toDouble()),
-        max(imageBottomRight.dy, level.pxHei! + level.worldY!.toDouble()),
-      );
-    }
-
-    // final imageSize = Rect.fromPoints(imageTopLeft, imageBottomRight).size;
     // Pan the camera down and right for 10 seconds, then reverse
     if (time % 20 < 10) {
-      cameraTarget.x = imageBottomRight.dx;
-      cameraTarget.y = imageBottomRight.dy;
+      cameraTarget = mapComponent.size - camera.viewport.effectiveSize;
     } else {
       cameraTarget.setZero();
     }

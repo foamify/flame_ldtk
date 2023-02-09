@@ -31,7 +31,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.0"
   flame_lint:
     dependency: "direct dev"
     description:
@@ -58,10 +58,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "401741205093c909f5775346da02ae3e5f7d27dc"
+      resolved-ref: b434ef8082a7db50f918ac46f57b5ccb5a3e49a9
       url: "https://github.com/foamify/ldtk.dart.git"
     source: git
-    version: "1.0.0"
+    version: "1.0.1"
   material_color_utilities:
     dependency: transitive
     description:
@@ -100,5 +100,5 @@ packages:
     source: hosted
     version: "2.1.4"
 sdks:
-  dart: ">=2.18.2 <4.0.0"
+  dart: ">=2.18.2 <3.0.0"
   flutter: ">=3.3.0"

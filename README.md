@@ -8,16 +8,17 @@ Inspired by flame_tiled
 
 - [X] Free world layout - Super simple mode
 - [X] Free world layout
-- [ ] Linear world layout - Super simple mode
-- [ ] Linear world layout
-- [ ] Gridvania world layout - Super simple mode
-- [ ] Gridvania world layout
+- [X] Linear world layout - Super simple mode
+- [X] Linear world layout
+- [X] Gridvania world layout - Super simple mode
+- [X] Gridvania world layout
 - [X] Load entities
 - [X] Entity fields (comes with `ldtk.dart`)
+- [X] Worlds (still experimental in LDtk)
+- [X] World depth (need to be improved somehow)
 - [ ] Separate `*.ldtkl` levels
-- [ ] Worlds (still experimental in LDtk)
-- [ ] World depth
 - [ ] Background images
+- [ ] Tile flips
 - [ ] More to be listed
 
 ## Screenshots

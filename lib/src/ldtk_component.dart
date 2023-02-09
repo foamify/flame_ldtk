@@ -3,28 +3,31 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
+import 'package:flame_ldtk/flame_ldtk.dart';
 import 'package:flame_ldtk/src/renderable_tile_map.dart';
 import 'package:meta/meta.dart';
 
 /// {@template _ldtk_component}
-/// A Flame [Component] to render an LDtk map.
 ///
-/// It uses a [RenderableLdtkMap] that prerenders levels into one single
-/// [Sprite].
+/// A Flame [Component] to render a whole LDtk map.
+///
+///
+/// Because this component is basically all levels mashed into one component,
+/// use this component as-is only if the map uses GridVania or
+/// Free World Layout and all levels don't overlap each other.
+///
+/// Other than that, use [tileMap.levelComponents] or
+/// [tileMap.simpleModeLayers].
+///
 /// {@endtemplate}
 class LdtkComponent<T extends FlameGame> extends PositionComponent
     with HasGameRef<T> {
   /// {@macro _ldtk_component}
   LdtkComponent(
     this.tileMap, {
-    super.position,
-    super.scale,
-    super.angle,
-    super.anchor,
-    super.children,
     super.priority,
   }) {
-    size = computeSize(tileMap);
+    super.size = computeSize(tileMap);
   }
 
   /// Map instance of this component.
@@ -55,24 +58,26 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
   /// and then use those to make [Rect];
   @visibleForTesting
   static Vector2 computeSize(RenderableLdtkMap tileMap) {
-    final topLeft = Vector2.zero();
-    final bottomRight = Vector2.zero();
-    tileMap.ldtk.levels?.forEach((element) {
-      topLeft
-        ..x = min(topLeft.x, element.worldX?.toDouble() ?? 0)
-        ..y = min(topLeft.y, element.worldY?.toDouble() ?? 0);
-      bottomRight
-        ..x = max(
-          bottomRight.x,
-          (element.worldX?.toDouble() ?? 0) + (element.pxWid ?? 0),
-        )
-        ..y = max(
-          bottomRight.y,
-          (element.worldY?.toDouble() ?? 0) + (element.pxHei ?? 0),
-        );
+    final worlds = tileMap.worldComponents ?? <LdtkWorld>[];
+    final size = worlds.fold<Vector2>(worlds.isEmpty ? Vector2.zero() : worlds.first.size,
+        (previousValue, element) {
+      final imageTopLeft = Offset(
+        min(previousValue.x, element.x),
+        min(previousValue.y, element.y),
+      );
+      final imageBottomRight = Offset(
+        max(
+          previousValue.toRect().bottomRight.dx,
+          element.toAbsoluteRect().bottomRight.dx,
+        ),
+        max(
+          previousValue.toRect().bottomRight.dy,
+          element.toAbsoluteRect().bottomRight.dy,
+        ),
+      );
+      return Rect.fromPoints(imageTopLeft, imageBottomRight).toVector2();
     });
-    final rect = Rect.fromPoints(topLeft.toOffset(), bottomRight.toOffset());
-    return rect.size.toVector2();
+    return size;
   }
 
   @override
@@ -98,6 +103,8 @@ class LdtkComponent<T extends FlameGame> extends PositionComponent
     tileMap.handleResize(size);
   }
 
+  /// Loads [LdtkComponent] from '/assets/ldtk/<[fileName]>'
+  ///
   static Future<LdtkComponent> load(
     String fileName, {
     int? priority,

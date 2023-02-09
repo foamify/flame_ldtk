@@ -9,7 +9,8 @@ import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame_ldtk/src/ldtk_entity.dart';
-import 'package:flame_ldtk/src/ldtk_layer.dart';
+import 'package:flame_ldtk/src/ldtk_level.dart';
+import 'package:flame_ldtk/src/ldtk_world.dart';
 import 'package:ldtk/ldtk.dart';
 
 /// {@template _renderable_ldtk_map}
@@ -22,22 +23,12 @@ class RenderableLdtkMap {
     this.camera,
     this.ldtkPath,
     this.simpleMode = false,
-    this.compositeLevels,
-    this.simpleModeLayers,
+    this.simpleModeLevels,
+    this.worldComponents,
     this.tilesetDefinitions = const {},
     this.entities = const [],
     this.entityDefinitions = const {},
-  }) {
-    _refreshCache();
-
-    final backgroundColor = ldtk.bgColor?.replaceFirst('#', '');
-    if (backgroundColor != null) {
-      _backgroundPaint = Paint();
-      _backgroundPaint!.color = Color(int.parse(backgroundColor, radix: 16));
-    } else {
-      _backgroundPaint = null;
-    }
-  }
+  });
 
   /// [Ldtk] instance for this map.
   final Ldtk ldtk;
@@ -50,16 +41,12 @@ class RenderableLdtkMap {
   /// images, and will support external .ldtkl levels in the future
   Uri? ldtkPath;
 
-  /// Paint for the map's background color, if there is one
-  late final Paint? _backgroundPaint;
-
   // final Map<Tile, TileFrames> animationFrames;
   final bool simpleMode;
 
-  final List<Sprite>? simpleModeLayers;
+  final List<Sprite>? simpleModeLevels;
 
-  /// prerendered layers
-  final List<LdtkLayer>? compositeLevels;
+  final List<LdtkWorld>? worldComponents;
 
   final Map<int, Image> tilesetDefinitions;
 
@@ -100,156 +87,182 @@ class RenderableLdtkMap {
     bool simpleMode = false,
     bool compositeAllLevels = false,
   }) async {
+    final isMultiWorld = ldtk.worldLayout == null;
+
     final ldtkPath = Uri.file(
       'assets/ldtk/$fileName',
       windows: Platform.isWindows,
     );
     final ldtkProjectName = fileName.substring(0, fileName.length - 5);
+
+    final worlds = isMultiWorld
+        ? ldtk.worlds?.map((e) => e.levels ?? []).toList() ?? <List<Level>>[]
+        : [ldtk.levels ?? <Level>[]];
+
     List<Sprite>? simpleModeLayers;
-    List<LdtkLayer>? compositeLevels;
+    final worldComponents = <LdtkWorld>[];
 
     /// get tilesets definition and sprite
     final tilesetsDefinitions = <int, Image>{};
 
     for (final tileset in ldtk.defs?.tilesets ?? <TilesetDefinition>[]) {
       final tilesetImagePath = ldtkPath.resolve(tileset.relPath ?? '');
-      final image = await (Flame.images..prefix = '').load(
-        tilesetImagePath.toFilePath(windows: Platform.isWindows),
-      );
-      tilesetsDefinitions[tileset.uid ?? -1] = image;
-    }
-
-    if (simpleMode) {
-      simpleModeLayers = await makeSimpleModeLayers(ldtk, ldtkProjectName);
-      if (compositeAllLevels) {
-        simpleModeLayers = [Sprite(makeSingleImage(simpleModeLayers))];
-      }
-    } else {
-      compositeLevels = [];
-      // TODO(damywise): prerender tiles as one image (all layers at once or per layer)
-      for (final level in ldtk.levels ?? <Level>[]) {
-        for (final layer
-            in level.layerInstances?.reversed ?? <LayerInstance>[]) {
-          final recorder = PictureRecorder();
-          final canvas = Canvas(recorder);
-          final imageSize = Size(
-            layer.cWid! * layer.gridSize!.toDouble(),
-            layer.cHei! * layer.gridSize!.toDouble(),
-          );
-
-          List<TileInstance>? tiles;
-          if ((layer.gridTiles ?? []).isNotEmpty) {
-            tiles = layer.gridTiles;
-          } else if ((layer.autoLayerTiles ?? []).isNotEmpty) {
-            tiles = layer.autoLayerTiles;
-          }
-
-          for (final tile in tiles ?? <TileInstance>[]) {
-            Sprite(
-              tilesetsDefinitions[layer.tilesetDefUid!]!,
-              srcPosition: Vector2(
-                tile.src!.first.toDouble(),
-                tile.src!.last.toDouble(),
-              ),
-              srcSize: Vector2(
-                layer.gridSize!.toDouble(),
-                layer.gridSize!.toDouble(),
-              ),
-            ).render(
-              canvas,
-              position: Vector2(
-                tile.px!.first.toDouble(),
-                tile.px!.last.toDouble(),
-              ),
-            );
-          }
-          final picture = recorder.endRecording();
-          final compiledLevelImage = picture.toImageSync(
-            imageSize.width.round(),
-            imageSize.height.round(),
-          );
-          compositeLevels.add(
-            LdtkLayer(
-              Sprite(compiledLevelImage),
-              Vector2(
-                level.worldX!.toDouble(),
-                level.worldY!.toDouble(),
-              ),
-            ),
-          );
-          picture.dispose();
-        }
-      }
-
-      if (compositeAllLevels) {
-        compositeLevels = [
-          LdtkLayer(
-            Sprite(
-              makeSingleImage(
-                compositeLevels
-                    .map((e) => Sprite(e.sprite.image, srcPosition: e.position))
-                    .toList(),
-              ),
-            ),
-            Vector2.zero(),
-          )
-        ];
+      Image? image;
+      if (tileset.embedAtlas != EmbedAtlas.LDTK_ICONS) {
+        image = await (Flame.images..prefix = '').load(
+          tilesetImagePath.toFilePath(windows: Platform.isWindows),
+        );
+        tilesetsDefinitions[tileset.uid ?? -1] = image;
       }
     }
 
-    /// get objects definition and sprite
+    /// get entities definition and sprite
     final entitiesDefinitions = <String, Sprite>{};
     for (final entity in ldtk.defs?.entities ?? <EntityDefinition>[]) {
-      entitiesDefinitions[entity.identifier!] = makeEntityImage(
-        Sprite(
-          tilesetsDefinitions[entity.tilesetId!]!,
-          srcPosition: Vector2(
-            entity.tileRect!.x!.toDouble(),
-            entity.tileRect!.y!.toDouble(),
-          ),
-          srcSize: Vector2(
-            entity.tileRect!.w!.toDouble(),
-            entity.tileRect!.h!.toDouble(),
-          ),
-        ),
-      );
-    }
-
-    final entities = ldtk.levels!
-        .map(
-          (level) => level.layerInstances!.map(
-            (layer) => layer.entityInstances!.map(
-              (entity) => LdtkEntity(
-                entitiesDefinitions[entity.identifier!]!,
-                entity,
-                Vector2(level.worldX!.toDouble(), level.worldY!.toDouble()),
-              ),
+      if (tilesetsDefinitions[entity.tilesetId!] != null) {
+        entitiesDefinitions[entity.identifier!] = makeEntityImage(
+          Sprite(
+            tilesetsDefinitions[entity.tilesetId!]!,
+            srcPosition: Vector2(
+              entity.tileRect!.x!.toDouble(),
+              entity.tileRect!.y!.toDouble(),
+            ),
+            srcSize: Vector2(
+              entity.tileRect!.w!.toDouble(),
+              entity.tileRect!.h!.toDouble(),
             ),
           ),
-        )
-        // converts List<List<List<T>>> into List<T>
-        .flattened
-        .flattened
-        .toList();
+        );
+      }
+    }
+
+    for (final levels in worlds) {
+      final entities = levels
+          .map(
+            (level) => level.layerInstances!.map(
+              (layer) => layer.entityInstances!.map(
+                (entity) => LdtkEntity(
+                  entitiesDefinitions[entity.identifier!],
+                  entity,
+                  Vector2(level.worldX!.toDouble(), level.worldY!.toDouble()),
+                ),
+              ),
+            ),
+          )
+          // converts Iterable<Iterable<Iterable<T>>> into List<T>
+          .flattened
+          .flattened
+          .toList();
+
+      List<LdtkLevel>? ldtkLevels;
+      if (simpleMode) {
+        simpleModeLayers = await makeSimpleModeLayers(levels, ldtkProjectName);
+        if (compositeAllLevels) {
+          simpleModeLayers = [Sprite(makeSingleImage(simpleModeLayers))];
+        }
+      } else {
+        ldtkLevels = [];
+        // TODO(damywise): prerender tiles as one image (all layers at once or per layer)
+        for (final level in levels) {
+          for (final layer
+              in level.layerInstances?.reversed ?? <LayerInstance>[]) {
+            final recorder = PictureRecorder();
+            final canvas = Canvas(recorder);
+            final imageSize = ldtk.worldLayout == WorldLayout.GRID_VANIA
+                ? Size(
+                    level.pxWid!.toDouble(),
+                    level.pxHei!.toDouble(),
+                  )
+                : Size(
+                    layer.cWid! * layer.gridSize!.toDouble(),
+                    layer.cHei! * layer.gridSize!.toDouble(),
+                  );
+
+            List<TileInstance>? layerTiles;
+            if ((layer.gridTiles ?? []).isNotEmpty) {
+              layerTiles = layer.gridTiles;
+            } else if ((layer.autoLayerTiles ?? []).isNotEmpty) {
+              layerTiles = layer.autoLayerTiles;
+            }
+
+            for (final tile in layerTiles ?? <TileInstance>[]) {
+              Sprite(
+                tilesetsDefinitions[layer.tilesetDefUid!]!,
+                srcPosition: Vector2(
+                  tile.src!.first.toDouble(),
+                  tile.src!.last.toDouble(),
+                ),
+                srcSize: Vector2(
+                  layer.gridSize!.toDouble(),
+                  layer.gridSize!.toDouble(),
+                ),
+              ).render(
+                canvas,
+                position: Vector2(
+                  tile.px!.first.toDouble(),
+                  tile.px!.last.toDouble(),
+                ),
+              );
+            }
+            final picture = recorder.endRecording();
+            final compiledLevelImage = picture.toImageSync(
+              imageSize.width.round(),
+              imageSize.height.round(),
+            );
+            ldtkLevels.add(
+              LdtkLevel(
+                Sprite(
+                  compiledLevelImage,
+                  srcPosition: ldtk.worldLayout == WorldLayout.GRID_VANIA
+                      ? Vector2(
+                          level.worldX!.toDouble(),
+                          level.worldY!.toDouble(),
+                        )
+                      : null,
+                ),
+                level,
+              ),
+            );
+            picture.dispose();
+          }
+        }
+      }
+      Sprite? sprite;
+
+      if (compositeAllLevels && ldtkLevels != null) {
+        sprite = Sprite(
+          makeSingleImage(
+            ldtkLevels
+                .map(
+                  (e) => Sprite(e.sprite.image, srcPosition: e.position),
+                )
+                .toList(),
+          ),
+        );
+        for (final level in ldtkLevels) {
+          level.sprite.image.dispose();
+        }
+      }
+      worldComponents.add(LdtkWorld(sprite, ldtkLevels ?? [], entities));
+    }
 
     return RenderableLdtkMap(
       ldtk,
       ldtkPath: ldtkPath,
       simpleMode: true,
-      simpleModeLayers: simpleModeLayers,
-      compositeLevels: compositeLevels,
+      simpleModeLevels: simpleModeLayers,
+      worldComponents: worldComponents,
       entityDefinitions: entitiesDefinitions,
-      entities: entities,
       tilesetDefinitions: tilesetsDefinitions,
     );
   }
 
   static Future<List<Sprite>> makeSimpleModeLayers(
-    Ldtk ldtk,
+    List<Level> levels,
     String ldtkProjectName,
   ) async {
     final simpleModeLayers = <Sprite>[];
-    for (final level in ldtk.levels ?? <Level>[]) {
+    for (final level in levels) {
       final levelName = level.identifier;
 
       final image = await (Flame.images..prefix = '').load(
@@ -270,6 +283,7 @@ class RenderableLdtkMap {
     return simpleModeLayers;
   }
 
+  /// Combine a list of sprites into one single image
   static Image makeSingleImage(List<Sprite> sprites) {
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder);
@@ -319,24 +333,20 @@ class RenderableLdtkMap {
   /// Handle game resize and propagate it to renderable layers
   void handleResize(Vector2 canvasSize) {}
 
-  /// Rebuilds the cache for rendering
-  void _refreshCache() {}
-
-  /// Renders each renderable layer in the same order specified by the LDtk map
+  /// Renders all world components at once
   void render(Canvas canvas) {
-    if (_backgroundPaint != null) {
-      canvas.drawPaint(_backgroundPaint!);
-    }
-
-    final sprites =
-        simpleModeLayers ?? compositeLevels?.map((e) => e.sprite);
-
-    for (final sprite in sprites ?? <Sprite>[]) {
-      canvas.drawImage(
-        sprite.image,
-        Offset(sprite.srcPosition.x, sprite.srcPosition.y),
-        Paint(),
-      );
+    if (simpleModeLevels != null) {
+      for (final sprite in simpleModeLevels ?? <Sprite>[]) {
+        canvas.drawImage(
+          sprite.image,
+          Offset(sprite.srcPosition.x, sprite.srcPosition.y),
+          Paint(),
+        );
+      }
+    } else {
+      for (final world in worldComponents ?? <LdtkWorld>[]) {
+        world.render(canvas);
+      }
     }
   }
 

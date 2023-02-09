@@ -19,12 +19,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/ldtk/
-    - assets/ldtk/third_map/
-    - assets/ldtk/third_map/simplified/
-    - assets/ldtk/third_map/simplified/Level_0/
-    - assets/ldtk/third_map/simplified/Level_1/
-    - assets/ldtk/third_map/simplified/Level_2/
-    - assets/ldtk/third_map/simplified/Level_3/
-    - assets/ldtk/third_map/simplified/Level_4/
-    - assets/ldtk/third_map/simplified/Level_5/
