@@ -1,0 +1,15 @@
+{
+	"identifier": "Only_base_rules",
+	"uniqueIdentifer": "a2c7b320-66b0-11ec-9cd7-c909139208d9",
+	"x": -1,
+	"y": -1,
+	"width": 256,
+	"height": 256,
+	"bgColor": "#000000",
+	"neighbourLevels": [],
+	"customFields" : {},
+	"layers": [
+		"IntGrid.png"
+	],
+	"entities" : {}
+}

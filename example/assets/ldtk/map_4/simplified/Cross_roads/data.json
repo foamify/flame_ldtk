@@ -1,0 +1,50 @@
+{
+	"identifier": "Cross_roads",
+	"uniqueIdentifer": "a36811d0-66b0-11ec-9cd7-4367627fb745",
+	"x": 0,
+	"y": 256,
+	"width": 512,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a367c3b0-66b0-11ec-9cd7-91690c910c97",
+			"dir": "n"
+		},
+		{
+			"levelIid": "a36a34b0-66b0-11ec-9cd7-09ebc042e238",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a36fda00-66b0-11ec-9cd7-ffa8f8d0b484",
+			"dir": "e"
+		},
+		{
+			"levelIid": "07caf540-66b0-11ec-a595-a55a7e13679d",
+			"dir": "e"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "60d34a20-66b0-11ec-9ccd-d9d0dea2f003",
+				"layer": "Entities",
+				"x": 448,
+				"y": 256,
+				"width": 16,
+				"height": 160,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

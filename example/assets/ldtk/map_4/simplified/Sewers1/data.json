@@ -1,0 +1,188 @@
+{
+	"identifier": "Sewers1",
+	"uniqueIdentifer": "a36fda00-66b0-11ec-9cd7-ffa8f8d0b484",
+	"x": 512,
+	"y": 512,
+	"width": 256,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36811d0-66b0-11ec-9cd7-4367627fb745",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a36b6d30-66b0-11ec-9cd7-8145d2a69a56",
+			"dir": "s"
+		},
+		{
+			"levelIid": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+			"dir": "e"
+		},
+		{
+			"levelIid": "a370eb70-66b0-11ec-9cd7-ef1d13410308",
+			"dir": "e"
+		},
+		{
+			"levelIid": "07caf540-66b0-11ec-a595-a55a7e13679d",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "0ab4ab60-66b0-11ec-9ccd-fdb315945fc4",
+				"layer": "Entities",
+				"x": 192,
+				"y": 480,
+				"width": 16,
+				"height": 32,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "73315870-66b0-11ec-8b7b-79c435d3e320",
+				"layer": "Entities",
+				"x": 160,
+				"y": 160,
+				"width": 16,
+				"height": 112,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "e08334d0-66b0-11ec-8923-49bb818dd44a",
+				"layer": "Entities",
+				"x": 48,
+				"y": 272,
+				"width": 16,
+				"height": 128,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		],
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "61c77d80-66b0-11ec-8b7b-9f180732e1db",
+				"layer": "Entities",
+				"x": 56,
+				"y": 224,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "647addb0-66b0-11ec-8b7b-bbc0182dd04a",
+				"layer": "Entities",
+				"x": 56,
+				"y": 480,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Armor",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a67a5010-66b0-11ec-8b7b-d35918af82d9",
+				"layer": "Entities",
+				"x": 104,
+				"y": 160,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gem",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a705a020-66b0-11ec-8b7b-394d1429f33c",
+				"layer": "Entities",
+				"x": 72,
+				"y": 160,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gem",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a8208600-66b0-11ec-8b7b-f3f1f99dc9c5",
+				"layer": "Entities",
+				"x": 136,
+				"y": 160,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gem",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "ad891b20-66b0-11ec-8b7b-6bd6c116571f",
+				"layer": "Entities",
+				"x": 88,
+				"y": 224,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "GoldNuggets",
+					"price": 0,
+					"count": 1
+				}
+			}
+		],
+		"Teleport": [
+			{
+				"id": "Teleport",
+				"iid": "eec0d610-66b0-11ec-8923-93cc88ee368d",
+				"layer": "Entities",
+				"x": 216,
+				"y": 368,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "efa1c030-66b0-11ec-8923-1f96484ed71d",
+						"layerIid": "a3707645-66b0-11ec-9cd7-cf8dbd45f43c",
+						"levelIid": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			}
+		]
+	}
+}

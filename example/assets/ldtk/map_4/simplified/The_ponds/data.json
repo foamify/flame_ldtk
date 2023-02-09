@@ -1,0 +1,83 @@
+{
+	"identifier": "The_ponds",
+	"uniqueIdentifer": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+	"x": 768,
+	"y": 768,
+	"width": 768,
+	"height": 256,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36d41f0-66b0-11ec-9cd7-e962574817d4",
+			"dir": "e"
+		},
+		{
+			"levelIid": "a36fda00-66b0-11ec-9cd7-ffa8f8d0b484",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a370eb70-66b0-11ec-9cd7-ef1d13410308",
+			"dir": "n"
+		},
+		{
+			"levelIid": "a3730e50-66b0-11ec-9cd7-65c84b0f9baa",
+			"dir": "n"
+		},
+		{
+			"levelIid": "a373aa90-66b0-11ec-9cd7-a9310f178834",
+			"dir": "s"
+		},
+		{
+			"levelIid": "a37690c0-66b0-11ec-9cd7-5f87e3c093eb",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Teleport": [
+			{
+				"id": "Teleport",
+				"iid": "b9c16e00-66b0-11ec-a595-f73311b85ab0",
+				"layer": "Entities",
+				"x": 232,
+				"y": 64,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "b70d98a0-66b0-11ec-a595-b125edb525fa",
+						"layerIid": "9312a0d1-66b0-11ec-a595-23396da8cf9f",
+						"levelIid": "9312a0d0-66b0-11ec-a595-a934707bd447",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			},
+			{
+				"id": "Teleport",
+				"iid": "efa1c030-66b0-11ec-8923-1f96484ed71d",
+				"layer": "Entities",
+				"x": 72,
+				"y": 128,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "eec0d610-66b0-11ec-8923-93cc88ee368d",
+						"layerIid": "a36fda05-66b0-11ec-9cd7-1f23fbb89ea4",
+						"levelIid": "a36fda00-66b0-11ec-9cd7-ffa8f8d0b484",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			}
+		]
+	}
+}

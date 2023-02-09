@@ -1,0 +1,66 @@
+{
+	"identifier": "The_tower",
+	"uniqueIdentifer": "a371aec0-66b0-11ec-9cd7-6f9e87cc2465",
+	"x": 1536,
+	"y": -256,
+	"width": 256,
+	"height": 768,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36d41f0-66b0-11ec-9cd7-e962574817d4",
+			"dir": "s"
+		},
+		{
+			"levelIid": "a36e7a70-66b0-11ec-9cd7-67ffb406aba0",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a37690c0-66b0-11ec-9cd7-5f87e3c093eb",
+			"dir": "w"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Teleport": [
+			{
+				"id": "Teleport",
+				"iid": "d4c0c970-66b0-11ec-b893-e744143e4b85",
+				"layer": "Entities",
+				"x": 200,
+				"y": 688,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "d0d166d0-66b0-11ec-b893-fbba01a4c0d1",
+						"layerIid": "a374bc05-66b0-11ec-9cd7-315ee5c3e0d3",
+						"levelIid": "a374bc00-66b0-11ec-9cd7-65fcab2d5d53",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "33248980-66b0-11ec-9ccd-7da3583966c5",
+				"layer": "Entities",
+				"x": 176,
+				"y": 80,
+				"width": 16,
+				"height": 112,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

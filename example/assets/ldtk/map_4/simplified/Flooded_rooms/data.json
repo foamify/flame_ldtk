@@ -1,0 +1,136 @@
+{
+	"identifier": "Flooded_rooms",
+	"uniqueIdentifer": "a373aa90-66b0-11ec-9cd7-a9310f178834",
+	"x": 1024,
+	"y": 1024,
+	"width": 512,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36d41f0-66b0-11ec-9cd7-e962574817d4",
+			"dir": "e"
+		},
+		{
+			"levelIid": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a373aa96-66b0-11ec-9cd7-7903b95e3e7d",
+				"layer": "Entities",
+				"x": 232,
+				"y": 448,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 200
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a373aa97-66b0-11ec-9cd7-d715c6c71930",
+				"layer": "Entities",
+				"x": 200,
+				"y": 448,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 50
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a373aa98-66b0-11ec-9cd7-d5022af1eb97",
+				"layer": "Entities",
+				"x": 312,
+				"y": 448,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Green_gem",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a373aa99-66b0-11ec-9cd7-d18008148c79",
+				"layer": "Entities",
+				"x": 120,
+				"y": 416,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gem",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "1b892130-7820-11ed-b4b8-155ce4ee3573",
+				"layer": "Entities",
+				"x": 168,
+				"y": 448,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 50
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "1c19c870-7820-11ed-b4b8-9dba990f1c87",
+				"layer": "Entities",
+				"x": 392,
+				"y": 448,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 50
+				}
+			}
+		],
+		"SecretArea": [
+			{
+				"id": "SecretArea",
+				"iid": "a373aa9b-66b0-11ec-9cd7-bd56f31f6283",
+				"layer": "Entities",
+				"x": 48,
+				"y": 176,
+				"width": 416,
+				"height": 144,
+				"color": 16763904,
+				"customFields": {
+					"playSecretJingle": true
+				}
+			}
+		]
+	}
+}

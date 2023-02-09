@@ -1,0 +1,69 @@
+{
+	"identifier": "Boss_room",
+	"uniqueIdentifer": "a36d41f0-66b0-11ec-9cd7-e962574817d4",
+	"x": 1536,
+	"y": 512,
+	"width": 512,
+	"height": 768,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a371aec0-66b0-11ec-9cd7-6f9e87cc2465",
+			"dir": "n"
+		},
+		{
+			"levelIid": "a373aa90-66b0-11ec-9cd7-a9310f178834",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a37690c0-66b0-11ec-9cd7-5f87e3c093eb",
+			"dir": "w"
+		}
+	],
+	"customFields": {
+		"roomType": "Boss"
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "f6a0ef30-66b0-11ec-9368-f1f32eefb458",
+				"layer": "Entities",
+				"x": 376,
+				"y": 336,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Fire_blade",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "fd5d2d70-66b0-11ec-9368-d360386152ce",
+				"layer": "Entities",
+				"x": 408,
+				"y": 336,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Healing_potion",
+					"price": 0,
+					"count": 1
+				}
+			}
+		]
+	}
+}

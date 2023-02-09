@@ -1,0 +1,160 @@
+{
+	"identifier": "Water_supply",
+	"uniqueIdentifer": "a36a34b0-66b0-11ec-9cd7-09ebc042e238",
+	"x": -512,
+	"y": 0,
+	"width": 512,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a367c3b0-66b0-11ec-9cd7-91690c910c97",
+			"dir": "e"
+		},
+		{
+			"levelIid": "a36811d0-66b0-11ec-9cd7-4367627fb745",
+			"dir": "e"
+		},
+		{
+			"levelIid": "a368fc30-66b0-11ec-9cd7-d141af83d44b",
+			"dir": "w"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a36a34b6-66b0-11ec-9cd7-6192e3dc5680",
+				"layer": "Entities",
+				"x": 280,
+				"y": 416,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Green_gem",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a36a34b7-66b0-11ec-9cd7-49f57098a445",
+				"layer": "Entities",
+				"x": 392,
+				"y": 416,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 50
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a36a34b9-66b0-11ec-9cd7-c1de732b0896",
+				"layer": "Entities",
+				"x": 104,
+				"y": 320,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Meat",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a36a34ba-66b0-11ec-9cd7-3d92ac9679f8",
+				"layer": "Entities",
+				"x": 232,
+				"y": 176,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Armor",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "260c2b70-7820-11ed-b4b8-e7d3d85992e6",
+				"layer": "Entities",
+				"x": 344,
+				"y": 416,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 20
+				}
+			}
+		],
+		"SecretArea": [
+			{
+				"id": "SecretArea",
+				"iid": "a36a34bb-66b0-11ec-9cd7-5b38c50aa489",
+				"layer": "Entities",
+				"x": 48,
+				"y": 80,
+				"width": 224,
+				"height": 112,
+				"color": 16763904,
+				"customFields": {
+					"playSecretJingle": true
+				}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "ad4d1430-66b0-11ec-9ccd-9d4683fc5a08",
+				"layer": "Entities",
+				"x": 320,
+				"y": 256,
+				"width": 16,
+				"height": 160,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "b2ce1350-66b0-11ec-9ccd-313511d6a7cc",
+				"layer": "Entities",
+				"x": 64,
+				"y": 320,
+				"width": 16,
+				"height": 128,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "1bebdd90-66b0-11ec-9ccd-bb4ef2660ecd",
+				"layer": "Entities",
+				"x": 448,
+				"y": 256,
+				"width": 16,
+				"height": 160,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

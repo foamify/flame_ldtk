@@ -1,0 +1,58 @@
+{
+	"identifier": "Long_hallway",
+	"uniqueIdentifer": "a374bc00-66b0-11ec-9cd7-65fcab2d5d53",
+	"x": 1536,
+	"y": 256,
+	"width": 1792,
+	"height": 256,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a375f480-66b0-11ec-9cd7-05be0d3437be",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Teleport": [
+			{
+				"id": "Teleport",
+				"iid": "d0d166d0-66b0-11ec-b893-fbba01a4c0d1",
+				"layer": "Entities",
+				"x": 120,
+				"y": 192,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "d4c0c970-66b0-11ec-b893-e744143e4b85",
+						"layerIid": "a371aec5-66b0-11ec-9cd7-cd4768d1d266",
+						"levelIid": "a371aec0-66b0-11ec-9cd7-6f9e87cc2465",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "3baf9450-66b0-11ec-9ccd-095fcfe224e9",
+				"layer": "Entities",
+				"x": 1712,
+				"y": 0,
+				"width": 16,
+				"height": 96,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

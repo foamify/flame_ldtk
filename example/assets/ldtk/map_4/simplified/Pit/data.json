@@ -1,0 +1,54 @@
+{
+	"identifier": "Pit",
+	"uniqueIdentifer": "a370eb70-66b0-11ec-9cd7-ef1d13410308",
+	"x": 768,
+	"y": 256,
+	"width": 256,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36fda00-66b0-11ec-9cd7-ffa8f8d0b484",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+			"dir": "s"
+		},
+		{
+			"levelIid": "a3727210-66b0-11ec-9cd7-aba0184f5034",
+			"dir": "n"
+		},
+		{
+			"levelIid": "a3730e50-66b0-11ec-9cd7-65c84b0f9baa",
+			"dir": "e"
+		},
+		{
+			"levelIid": "07caf540-66b0-11ec-a595-a55a7e13679d",
+			"dir": "w"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "9a28b800-66b0-11ec-9ccd-1bf7e7ba09a4",
+				"layer": "Entities",
+				"x": 208,
+				"y": 144,
+				"width": 16,
+				"height": 112,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

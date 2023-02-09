@@ -1,0 +1,63 @@
+{
+	"identifier": "Shortcut_passage",
+	"uniqueIdentifer": "9312a0d0-66b0-11ec-a595-a934707bd447",
+	"x": 512,
+	"y": 768,
+	"width": 768,
+	"height": 768,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36f8be0-66b0-11ec-9cd7-a9c628ac47cf",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Teleport": [
+			{
+				"id": "Teleport",
+				"iid": "abd6a7b0-66b0-11ec-a595-ffcc1299ef8f",
+				"layer": "Entities",
+				"x": 296,
+				"y": 528,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "1a247570-66b0-11ec-b893-3368fa8363b5",
+						"layerIid": "a36b6d35-66b0-11ec-9cd7-430b1023ae6b",
+						"levelIid": "a36b6d30-66b0-11ec-9cd7-8145d2a69a56",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			},
+			{
+				"id": "Teleport",
+				"iid": "b70d98a0-66b0-11ec-a595-b125edb525fa",
+				"layer": "Entities",
+				"x": 456,
+				"y": 176,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "b9c16e00-66b0-11ec-a595-f73311b85ab0",
+						"layerIid": "a3707645-66b0-11ec-9cd7-cf8dbd45f43c",
+						"levelIid": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			}
+		]
+	}
+}

@@ -1,0 +1,54 @@
+{
+	"identifier": "Large_water",
+	"uniqueIdentifer": "a36e7a70-66b0-11ec-9cd7-67ffb406aba0",
+	"x": 1024,
+	"y": -256,
+	"width": 512,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a371aec0-66b0-11ec-9cd7-6f9e87cc2465",
+			"dir": "e"
+		},
+		{
+			"levelIid": "a3727210-66b0-11ec-9cd7-aba0184f5034",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a3730e50-66b0-11ec-9cd7-65c84b0f9baa",
+			"dir": "s"
+		},
+		{
+			"levelIid": "a37690c0-66b0-11ec-9cd7-5f87e3c093eb",
+			"dir": "s"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a36e7a76-66b0-11ec-9cd7-9d8532e17d71",
+				"layer": "Entities",
+				"x": 152,
+				"y": 128,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Healing_potion",
+					"price": 0,
+					"count": 1
+				}
+			}
+		]
+	}
+}

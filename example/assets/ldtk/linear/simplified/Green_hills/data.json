@@ -1,0 +1,15 @@
+{
+	"identifier": "Green_hills",
+	"uniqueIdentifer": "a2c54220-66b0-11ec-9cd7-8fe822b5bd24",
+	"x": -1,
+	"y": -1,
+	"width": 256,
+	"height": 256,
+	"bgColor": "#000000",
+	"neighbourLevels": [],
+	"customFields" : {},
+	"layers": [
+		"IntGrid.png"
+	],
+	"entities" : {}
+}

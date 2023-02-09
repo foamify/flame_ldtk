@@ -1,0 +1,88 @@
+{
+	"identifier": "Sewers_trash",
+	"uniqueIdentifer": "a36c5790-66b0-11ec-9cd7-0d08d7991930",
+	"x": 256,
+	"y": 1536,
+	"width": 512,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36b6d30-66b0-11ec-9cd7-8145d2a69a56",
+			"dir": "n"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a36c5796-66b0-11ec-9cd7-abe4f8e55b6a",
+				"layer": "Entities",
+				"x": 88,
+				"y": 288,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Fire_blade",
+					"price": 0,
+					"count": 1
+				}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "c08daaf0-66b0-11ec-9ccd-e19e0bbbe943",
+				"layer": "Entities",
+				"x": 352,
+				"y": 160,
+				"width": 16,
+				"height": 288,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "c238e9f0-66b0-11ec-9ccd-019be134d42b",
+				"layer": "Entities",
+				"x": 112,
+				"y": 288,
+				"width": 16,
+				"height": 160,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "e7eab980-66b0-11ec-9ccd-492e6ed5ee3f",
+				"layer": "Entities",
+				"x": 80,
+				"y": 0,
+				"width": 16,
+				"height": 176,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "e945dcb0-66b0-11ec-9ccd-0f70f0549c1f",
+				"layer": "Entities",
+				"x": 16,
+				"y": 176,
+				"width": 16,
+				"height": 112,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

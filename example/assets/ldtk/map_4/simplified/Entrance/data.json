@@ -1,0 +1,112 @@
+{
+	"identifier": "Entrance",
+	"uniqueIdentifer": "a367c3b0-66b0-11ec-9cd7-91690c910c97",
+	"x": 0,
+	"y": 0,
+	"width": 512,
+	"height": 256,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36811d0-66b0-11ec-9cd7-4367627fb745",
+			"dir": "s"
+		},
+		{
+			"levelIid": "a36a34b0-66b0-11ec-9cd7-09ebc042e238",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a3727210-66b0-11ec-9cd7-aba0184f5034",
+			"dir": "e"
+		}
+	],
+	"customFields": {
+		"roomType": "Entrance"
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a367c3b6-66b0-11ec-9cd7-61bd30243515",
+				"layer": "Entities",
+				"x": 456,
+				"y": 176,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 100
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a367c3b7-66b0-11ec-9cd7-65b15caa5ba5",
+				"layer": "Entities",
+				"x": 56,
+				"y": 96,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Healing_potion",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "bbe3dcc0-8dc0-11ec-92c1-954a1fe43153",
+				"layer": "Entities",
+				"x": 120,
+				"y": 96,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Ammo",
+					"price": 0,
+					"count": 5
+				}
+			}
+		],
+		"Player": [
+			{
+				"id": "Player",
+				"iid": "a367c3b8-66b0-11ec-9cd7-313e15c65fee",
+				"layer": "Entities",
+				"x": 296,
+				"y": 176,
+				"width": 20,
+				"height": 20,
+				"color": 4774517,
+				"customFields": {
+					"inventory": [
+						"Ammo",
+						"Bow"
+					],
+					"HP": 10
+				}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "aa59c4d0-66b0-11ec-9ccd-fdfb8075370d",
+				"layer": "Entities",
+				"x": 80,
+				"y": 96,
+				"width": 16,
+				"height": 80,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

@@ -1,0 +1,51 @@
+{
+	"identifier": "Exit",
+	"uniqueIdentifer": "a375f480-66b0-11ec-9cd7-05be0d3437be",
+	"x": 2816,
+	"y": 0,
+	"width": 512,
+	"height": 256,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a374bc00-66b0-11ec-9cd7-65fcab2d5d53",
+			"dir": "s"
+		}
+	],
+	"customFields": {
+		"roomType": "Exit"
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Exit": [
+			{
+				"id": "Exit",
+				"iid": "a375f486-66b0-11ec-9cd7-fd86a8f321b7",
+				"layer": "Entities",
+				"x": 16,
+				"y": 128,
+				"width": 48,
+				"height": 48,
+				"color": 1207499,
+				"customFields" : {}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "473827b0-66b0-11ec-9ccd-136878feffb5",
+				"layer": "Entities",
+				"x": 432,
+				"y": 208,
+				"width": 16,
+				"height": 48,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

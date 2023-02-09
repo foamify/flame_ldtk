@@ -1,0 +1,70 @@
+{
+	"identifier": "Ossuary",
+	"uniqueIdentifer": "a368fc30-66b0-11ec-9cd7-d141af83d44b",
+	"x": -1024,
+	"y": 0,
+	"width": 512,
+	"height": 768,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36a34b0-66b0-11ec-9cd7-09ebc042e238",
+			"dir": "e"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a368fc36-66b0-11ec-9cd7-d54493e15d01",
+				"layer": "Entities",
+				"x": 248,
+				"y": 672,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Armor",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a368fc37-66b0-11ec-9cd7-6da7cb2a925d",
+				"layer": "Entities",
+				"x": 120,
+				"y": 672,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Fire_blade",
+					"price": 0,
+					"count": 1
+				}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "b58d0c40-66b0-11ec-9ccd-71b951d72c41",
+				"layer": "Entities",
+				"x": 336,
+				"y": 576,
+				"width": 16,
+				"height": 96,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}

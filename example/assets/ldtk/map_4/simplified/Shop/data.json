@@ -1,0 +1,107 @@
+{
+	"identifier": "Shop",
+	"uniqueIdentifer": "a36f8be0-66b0-11ec-9cd7-a9c628ac47cf",
+	"x": 256,
+	"y": 0,
+	"width": 768,
+	"height": 768,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "9312a0d0-66b0-11ec-a595-a934707bd447",
+			"dir": "s"
+		}
+	],
+	"customFields": {
+		"roomType": "Shop"
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a36f8be6-66b0-11ec-9cd7-b5a8d5ccc437",
+				"layer": "Entities",
+				"x": 328,
+				"y": 352,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Meat",
+					"price": 5,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a36f8be7-66b0-11ec-9cd7-316971e16d32",
+				"layer": "Entities",
+				"x": 376,
+				"y": 352,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Armor",
+					"price": 100,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a36f8be8-66b0-11ec-9cd7-fd36870bdef5",
+				"layer": "Entities",
+				"x": 424,
+				"y": 352,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Vorpal_blade",
+					"price": 500,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a36f8be9-66b0-11ec-9cd7-89a0e2fc55f0",
+				"layer": "Entities",
+				"x": 472,
+				"y": 352,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Spell",
+					"price": 250,
+					"count": 1
+				}
+			}
+		],
+		"Teleport": [
+			{
+				"id": "Teleport",
+				"iid": "9c20a1d0-66b0-11ec-b893-7dd8e9dfe663",
+				"layer": "Entities",
+				"x": 472,
+				"y": 464,
+				"width": 24,
+				"height": 24,
+				"color": 15487231,
+				"customFields": {
+					"destination": {
+						"entityIid": "3bde8fe0-66b0-11ec-a595-515a2ae1dbef",
+						"layerIid": "07caf541-66b0-11ec-a595-b3726fb46cd5",
+						"levelIid": "07caf540-66b0-11ec-a595-a55a7e13679d",
+						"worldIid": "19dc9dc0-9f30-11ed-99e7-31b6abfa29db"
+					}
+				}
+			}
+		]
+	}
+}

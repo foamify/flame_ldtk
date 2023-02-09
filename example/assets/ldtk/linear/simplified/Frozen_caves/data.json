@@ -1,0 +1,15 @@
+{
+	"identifier": "Frozen_caves",
+	"uniqueIdentifer": "a2c62c80-66b0-11ec-9cd7-41c82a77a0c0",
+	"x": -1,
+	"y": -1,
+	"width": 256,
+	"height": 256,
+	"bgColor": "#000000",
+	"neighbourLevels": [],
+	"customFields" : {},
+	"layers": [
+		"IntGrid.png"
+	],
+	"entities" : {}
+}

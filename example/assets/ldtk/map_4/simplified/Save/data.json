@@ -1,0 +1,50 @@
+{
+	"identifier": "Save",
+	"uniqueIdentifer": "a3730e50-66b0-11ec-9cd7-65c84b0f9baa",
+	"x": 1024,
+	"y": 256,
+	"width": 256,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a36e7a70-66b0-11ec-9cd7-67ffb406aba0",
+			"dir": "n"
+		},
+		{
+			"levelIid": "a3707640-66b0-11ec-9cd7-59efc6b24075",
+			"dir": "s"
+		},
+		{
+			"levelIid": "a370eb70-66b0-11ec-9cd7-ef1d13410308",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a37690c0-66b0-11ec-9cd7-5f87e3c093eb",
+			"dir": "e"
+		}
+	],
+	"customFields": {
+		"roomType": "Save"
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"SavingPoint": [
+			{
+				"id": "SavingPoint",
+				"iid": "762fb910-7820-11ed-a6f2-95baf210def0",
+				"layer": "Entities",
+				"x": 112,
+				"y": 96,
+				"width": 32,
+				"height": 48,
+				"color": 16771930,
+				"customFields" : {}
+			}
+		]
+	}
+}

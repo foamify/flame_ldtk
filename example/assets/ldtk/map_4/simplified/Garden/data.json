@@ -1,0 +1,108 @@
+{
+	"identifier": "Garden",
+	"uniqueIdentifer": "a3727210-66b0-11ec-9cd7-aba0184f5034",
+	"x": 512,
+	"y": -256,
+	"width": 512,
+	"height": 512,
+	"bgColor": "#37494E",
+	"neighbourLevels": [
+		{
+			"levelIid": "a367c3b0-66b0-11ec-9cd7-91690c910c97",
+			"dir": "w"
+		},
+		{
+			"levelIid": "a36e7a70-66b0-11ec-9cd7-67ffb406aba0",
+			"dir": "e"
+		},
+		{
+			"levelIid": "a370eb70-66b0-11ec-9cd7-ef1d13410308",
+			"dir": "s"
+		},
+		{
+			"levelIid": "07caf540-66b0-11ec-a595-a55a7e13679d",
+			"dir": "s"
+		}
+	],
+	"customFields": {
+		"roomType": null
+	},
+	"layers": [
+		"Background.png",
+		"Collisions.png",
+		"Wall_shadows.png"
+	],
+	"entities": {
+		"Item": [
+			{
+				"id": "Item",
+				"iid": "a3727216-66b0-11ec-9cd7-f345e02ef7d2",
+				"layer": "Entities",
+				"x": 264,
+				"y": 256,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gold",
+					"price": 0,
+					"count": 50
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a3727217-66b0-11ec-9cd7-8ff79d11908d",
+				"layer": "Entities",
+				"x": 376,
+				"y": 464,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Gem",
+					"price": 0,
+					"count": 1
+				}
+			},
+			{
+				"id": "Item",
+				"iid": "a3727218-66b0-11ec-9cd7-1ddad18de70d",
+				"layer": "Entities",
+				"x": 56,
+				"y": 256,
+				"width": 24,
+				"height": 24,
+				"color": 16772234,
+				"customFields": {
+					"type": "Healing_potion",
+					"price": 0,
+					"count": 1
+				}
+			}
+		],
+		"Ladder": [
+			{
+				"id": "Ladder",
+				"iid": "a5883f90-66b0-11ec-9ccd-15e7115af90e",
+				"layer": "Entities",
+				"x": 176,
+				"y": 256,
+				"width": 16,
+				"height": 96,
+				"color": 9755059,
+				"customFields" : {}
+			},
+			{
+				"id": "Ladder",
+				"iid": "a6d1af80-66b0-11ec-9ccd-e12feaf4f282",
+				"layer": "Entities",
+				"x": 128,
+				"y": 352,
+				"width": 16,
+				"height": 112,
+				"color": 9755059,
+				"customFields" : {}
+			}
+		]
+	}
+}
