@@ -4,7 +4,7 @@ Package to bridge the `ldtk` library into easy-to-use Flame components.
 
 Inspired by flame_tiled
 
-## Features
+## Todos
 
 - [X] Free world layout - Super simple mode
 - [X] Free world layout
@@ -18,7 +18,7 @@ Inspired by flame_tiled
 - [X] World depth (need to be improved somehow)
 - [ ] Separate `*.ldtkl` levels
 - [ ] Background images
-- [ ] Tile flips
+- [X] Tile flips
 - [ ] More to be listed
 
 ## Screenshots

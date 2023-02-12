@@ -1,7 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame_ldtk/flame_ldtk.dart';
 import 'package:flutter/widgets.dart' hide Animation, Image;
@@ -23,8 +22,8 @@ class LdtkGame extends FlameGame {
     add(FpsTextComponent());
 
     mapComponent = await LdtkComponent.load(
-      // 'linear.ldtk',
-      'third_map.ldtk',
+      'linear.ldtk',  // for testing tile flips
+      // 'third_map.ldtk',
       // 'map_4.ldtk',
       camera: camera,
       // simpleMode: true,
@@ -33,7 +32,7 @@ class LdtkGame extends FlameGame {
 
     // add(mapComponent);
     // add(mapComponent.tileMap.worldComponents!.first);
-    // add(mapComponent.tileMap.worldComponents!.first.levels.first);
+    add(mapComponent.tileMap.worldComponents!.first.levels.first);  // for testing tile flips
     // add(mapComponent.tileMap.worldComponents!.first.levels.last);
     addAll(
       mapComponent.tileMap.worldComponents

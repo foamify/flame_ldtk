@@ -196,23 +196,77 @@ class RenderableLdtkMap {
             }
 
             for (final tile in layerTiles ?? <TileInstance>[]) {
-              Sprite(
-                tilesetsDefinitions[layer.tilesetDefUid!]!,
-                srcPosition: Vector2(
-                  tile.src!.first.toDouble(),
-                  tile.src!.last.toDouble(),
-                ),
-                srcSize: Vector2(
-                  layer.gridSize!.toDouble(),
-                  layer.gridSize!.toDouble(),
-                ),
-              ).render(
-                canvas,
-                position: Vector2(
-                  tile.px!.first.toDouble(),
-                  tile.px!.last.toDouble(),
-                ),
-              );
+              final tileRecorder = PictureRecorder();
+              final tileCanvas = Canvas(tileRecorder);
+              final image = tilesetsDefinitions[layer.tilesetDefUid!]!;
+              switch (tile.f) {
+                case 1:
+                  // flip horizontally
+                  tileCanvas.translate(layer.gridSize!.toDouble(), 0);
+                  tileCanvas.scale(-1, 1);
+                  break;
+                case 2:
+                  // flip vertically
+                  tileCanvas.translate(0, layer.gridSize!.toDouble());
+                  tileCanvas.scale(1, -1);
+                  break;
+                case 3:
+                  // flip horizontally and vertically
+                  tileCanvas.translate(layer.gridSize!.toDouble(), 0);
+                  tileCanvas.scale(-1, 1);
+                  tileCanvas.translate(0, layer.gridSize!.toDouble());
+                  tileCanvas.scale(1, -1);
+                  break;
+                default:
+                  // render non-flipped tile
+                  Sprite(
+                    image,
+                    srcPosition: Vector2(
+                      tile.src!.first.toDouble(),
+                      tile.src!.last.toDouble(),
+                    ),
+                    srcSize: Vector2(
+                      layer.gridSize!.toDouble(),
+                      layer.gridSize!.toDouble(),
+                    ),
+                  ).render(
+                    canvas,
+                    position: Vector2(
+                      tile.px!.first.toDouble(),
+                      tile.px!.last.toDouble(),
+                    ),
+                  );
+                  break;
+              }
+              if (tile.f! > 0) {
+                // if tile is flipped in any direction
+                Sprite(
+                  tilesetsDefinitions[layer.tilesetDefUid!]!,
+                  srcPosition: Vector2(
+                    tile.src!.first.toDouble(),
+                    tile.src!.last.toDouble(),
+                  ),
+                  srcSize: Vector2(
+                    layer.gridSize!.toDouble(),
+                    layer.gridSize!.toDouble(),
+                  ),
+                ).render(
+                  tileCanvas,
+                );
+                final tileImage = tileRecorder
+                    .endRecording()
+                    .toImageSync(layer.gridSize!, layer.gridSize!);
+                Sprite(
+                  tileImage,
+                ).render(
+                  canvas,
+                  position: Vector2(
+                    tile.px!.first.toDouble(),
+                    tile.px!.last.toDouble(),
+                  ),
+                );
+                tileImage.dispose();
+              }
             }
             final picture = recorder.endRecording();
             final compiledLevelImage = picture.toImageSync(
